@@ -35,6 +35,7 @@ var Lektion_2;
         console.log("Du hast gewonnen!!!!");
     else
         console.log("Nope. Leider verloren.");
+    //Switch
     switch (anyKindOfNumber) {
         case 1:
             console.log("Damn das war eine EINS");

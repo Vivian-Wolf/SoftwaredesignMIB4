@@ -1,3 +1,4 @@
-namespace Lektion_2{
-console.log("Hello World!");
+namespace Lektion_2 {
+    console.log("Hello World!");
+
 }

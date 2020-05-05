@@ -62,5 +62,9 @@ var Lektion_2;
         console.log(sentenceArray[counter]);
         counter++;
     }
+    let testArray = [1, 2, 3, 4, 5, 6, 7];
+    let index = 2;
+    testArray.splice(index, 1);
+    console.log(testArray);
 })(Lektion_2 || (Lektion_2 = {}));
 //# sourceMappingURL=main.js.map

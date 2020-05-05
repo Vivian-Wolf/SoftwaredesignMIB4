@@ -71,4 +71,9 @@ namespace Lektion_2 {
         console.log(sentenceArray[counter]);
         counter++;
     }
+
+    let testArray: number[] = [1,2,3,4,5,6,7];
+    let index: number = 2;
+    testArray.splice(index,1);
+    console.log(testArray);
 }

@@ -28,8 +28,8 @@ var Aufgabe_2_Niels;
 })(Aufgabe_2_Niels || (Aufgabe_2_Niels = {}));
 var Aufgabe_2_Vivian;
 (function (Aufgabe_2_Vivian) {
-    let subject = ["das Auge", "die Stadt", "das Trauma", "der Weltuntergang", "die Kunst", "die Leere", "die Erinnerung", "die Flucht", "die Gesellschaft", "mein Bruder", "die Ewigkeit", "die Demokratie"];
-    let verb = ["läuft", "sieht", "erscheint", "wütet", "stiehlt", "vergeht", "blutet", "hypnotisiert", "beseitigt", "selektiert", "betrügt", "analysiert"];
+    let subject = ["der Zerfall", "das Meer", "das Auge", "die Stadt", "das Trauma", "der Weltuntergang", "die Kunst", "die Leere", "die Erinnerung", "die Flucht", "die Gesellschaft", "mein Bruder", "die Ewigkeit", "die Demokratie"];
+    let verb = ["vernichtet", "schießt", "läuft", "sieht", "erscheint", "wütet", "stiehlt", "vergeht", "blutet", "hypnotisiert", "beseitigt", "selektiert", "betrügt", "analysiert"];
     let object = ["ohne eine Zukunft", "auf den Zerfall hin", "im Traum", "in den Gedanken", "sich durch die Tortur", "durch den Tag", "durch einen Ozean des Grauens", ".", "sich durch eine innere Leere", "ohne Gewissen", "im Durchschnitt drei Mal", "mit verzweifelten Seelen"];
     getVerse();
     function getVerse() {

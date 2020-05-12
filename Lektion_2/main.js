@@ -28,6 +28,7 @@ var Lektion_2;
     }
     let newPerson;
     newPerson = new MyPerson("Maria", 13);
+    console.log(newPerson);
     //If/else
     anyKindOfNumber = parseInt(prompt());
     let newNumber = parseInt(prompt());

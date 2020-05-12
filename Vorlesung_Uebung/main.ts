@@ -13,7 +13,7 @@ namespace Vorlesung_Uebung {
     let a: number [] = [123, 321, 34];
     let o: Object = {firstname: "Egzon", lastname: "Demaj", age: 25};
 
-    console.log(x, y, a, o)
+    console.log(x, y, a, o);
 
     let h: HTMLHeadElement = document.querySelector("h1");
     console.log(h);

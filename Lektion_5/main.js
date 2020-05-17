@@ -55,4 +55,45 @@ var Lektion_5;
         i++;
     }
 })(Lektion_5 || (Lektion_5 = {}));
+var AbstractKlassen;
+(function (AbstractKlassen) {
+    class Person {
+        constructor(_nameDerPerson, _alterDerPerson) {
+            this.name = _nameDerPerson;
+            this.alter = _alterDerPerson;
+        }
+        altersAbfrage() {
+            if (this.alter > 200)
+                return "Damn " + this.name + " ist steinalt!";
+            else
+                return this.name + " ist zu jung, um eine Legende zu sein.";
+        }
+    }
+    //Vererbung der abstrakten Klasse
+    class Koenig extends Person {
+        constructor(_name, _alter, _gebiet) {
+            super(_name, _alter);
+            this.territorium = _gebiet;
+        }
+        grabrede() {
+            return this.name + " war der Herrscher von " + this.territorium + " und so geht er nun dahin. Auf das er herrschen werde im Himmel, wie auf Erden.";
+        }
+    }
+    class Maler extends Person {
+        grabrede() {
+            return this.name + " hat die Kunstgeschichte verändert. Sein Pinsel war das Schwert, die Leinwand sein Krieg.";
+        }
+    }
+    class Dichter extends Person {
+        grabrede() {
+            return "An " + this.name + ": Im Morgentau gehst du dahin, liebst noch immer wie der Wind. Kannst nun gehen, kannst nun sein, deine Seele ist nun endlich rein.";
+        }
+    }
+    let ludwig = new Koenig("Ludwig XIV", 382, "Frankreich");
+    let hundertwasser = new Maler("Friedenreich Hundertwasser", 92);
+    let heine = new Dichter("Heinrich Heine", 223);
+    console.log(ludwig.grabrede());
+    console.log(hundertwasser.grabrede());
+    console.log(heine.grabrede());
+})(AbstractKlassen || (AbstractKlassen = {}));
 //# sourceMappingURL=main.js.map

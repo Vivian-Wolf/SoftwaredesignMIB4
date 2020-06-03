@@ -6,7 +6,7 @@ namespace Quiz {
             this.question = _question;
         }
 
-        //abstract answerQuestion(): boolean;
+        abstract answerQuestion(): boolean;
         abstract addNewQuestion(_question: string): Question;
         
         addWrongAnswer(_answers: string[]): string[] {

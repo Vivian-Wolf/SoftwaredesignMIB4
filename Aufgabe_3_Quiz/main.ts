@@ -1,7 +1,7 @@
 namespace Quiz {
 
     let punktestand: number = 0;
-    let fragen: Question[];
+    let fragen: Question[] = [];
     let i: number;
 
     while (i != 3) {
@@ -32,7 +32,6 @@ namespace Quiz {
 
     function customQuestionBuilder(): void {
         let questionType: number;
-        let neueFrage: Question;
         let question: string;
 
         questionType = parseInt(prompt("Fragentyp wählen: 1 = einfache Frage, 2 = Ja-/Nein-Frage, 3 = Multiple-Choice-Frage, 4 = Schätzfrage, 5 =Textfrage"));
@@ -40,21 +39,30 @@ namespace Quiz {
 
         switch (questionType) {
             case 1:
-                neueFrage = SingleQuestion.addNewQuestion();
+                let newSingleQuestion: SingleQuestion = new SingleQuestion(question, []);
+                newSingleQuestion.addNewQuestion(question);
+                fragen.push(newSingleQuestion);
                 break;
             case 2:
-                neueFrage = YesNoQuestion.addNewQuestion();
+                let newYesNoQuestion: YesNoQuestion = new YesNoQuestion(question, false);
+                newYesNoQuestion.addNewQuestion(question);
+                fragen.push(newYesNoQuestion);
                 break;
             case 3:
-                neueFrage = MultipleChoiceQuestion.addNewQuestion();
+                let newMultipleChoiceQuestion: MultipleChoiceQuestion = new MultipleChoiceQuestion(question, [], []);
+                newMultipleChoiceQuestion.addNewQuestion(question);
+                fragen.push(newMultipleChoiceQuestion);
                 break;
             case 4:
-                neueFrage = GuessQuestion.addNewQuestion();
+                let newGuessQuestion: GuessQuestion = new GuessQuestion(question, 0, 0);
+                newGuessQuestion.addNewQuestion(question);
+                fragen.push(newGuessQuestion);
                 break;
             case 5:
-                neueFrage = TextQuestion.addNewQuestion();
+                let newTextQuestion: TextQuestion = new TextQuestion(question, "");
+                newTextQuestion.addNewQuestion(question);
+                fragen.push(newTextQuestion);
                 break;
         }
-        fragen.push(neueFrage);
     }
 }

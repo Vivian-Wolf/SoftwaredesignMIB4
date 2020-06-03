@@ -2,7 +2,7 @@
 var Quiz;
 (function (Quiz) {
     let punktestand = 0;
-    let fragen;
+    let fragen = [];
     let i;
     while (i != 3) {
         console.log("1 eingeben: Quizfrage beantworten, 2 eingeben: Frage hinzufügen, 3 eingeben: Verlassen");
@@ -31,28 +31,36 @@ var Quiz;
     }
     function customQuestionBuilder() {
         let questionType;
-        let neueFrage;
         let question;
         questionType = parseInt(prompt("Fragentyp wählen: 1 = einfache Frage, 2 = Ja-/Nein-Frage, 3 = Multiple-Choice-Frage, 4 = Schätzfrage, 5 =Textfrage"));
         question = prompt("Bitte neue Frage eingeben");
         switch (questionType) {
             case 1:
-                neueFrage = Quiz.SingleQuestion.addNewQuestion();
+                let newSingleQuestion = new Quiz.SingleQuestion(question, []);
+                newSingleQuestion.addNewQuestion(question);
+                fragen.push(newSingleQuestion);
                 break;
             case 2:
-                neueFrage = Quiz.YesNoQuestion.addNewQuestion();
+                let newYesNoQuestion = new Quiz.YesNoQuestion(question, false);
+                newYesNoQuestion.addNewQuestion(question);
+                fragen.push(newYesNoQuestion);
                 break;
             case 3:
-                neueFrage = Quiz.MultipleChoiceQuestion.addNewQuestion();
+                let newMultipleChoiceQuestion = new Quiz.MultipleChoiceQuestion(question, [], []);
+                newMultipleChoiceQuestion.addNewQuestion(question);
+                fragen.push(newMultipleChoiceQuestion);
                 break;
             case 4:
-                neueFrage = Quiz.GuessQuestion.addNewQuestion();
+                let newGuessQuestion = new Quiz.GuessQuestion(question, 0, 0);
+                newGuessQuestion.addNewQuestion(question);
+                fragen.push(newGuessQuestion);
                 break;
             case 5:
-                neueFrage = Quiz.TextQuestion.addNewQuestion();
+                let newTextQuestion = new Quiz.TextQuestion(question, "");
+                newTextQuestion.addNewQuestion(question);
+                fragen.push(newTextQuestion);
                 break;
         }
-        fragen.push(neueFrage);
     }
 })(Quiz || (Quiz = {}));
 //# sourceMappingURL=main.js.map

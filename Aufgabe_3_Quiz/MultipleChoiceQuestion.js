@@ -21,6 +21,39 @@ var Quiz;
             neueFrage = new MultipleChoiceQuestion(this.question, this.rightAnswers, answers);
             return neueFrage;
         }
+        answerQuestion() {
+            let possibleAnswers = this.answers;
+            let i = 0;
+            let answeredCorrect = false;
+            let randomizedAnswers;
+            console.log(this.question);
+            while (randomizedAnswers.length > 0) {
+                let j = Math.floor(Math.random() * possibleAnswers.length - 1);
+                randomizedAnswers[i] = possibleAnswers[j];
+                possibleAnswers.splice(j, 1);
+                console.log(i.toString() + ": " + randomizedAnswers[i]);
+                i++;
+            }
+            console.log("Geben Sie die Nummer der richtigen Antwort ein und trennen Sie sie mit ',' voneinander. Wenn keine Antwort richtig ist geben Sie '-' ein.");
+            let eingabe = prompt("Geben Sie die Nummer der richtigen Antwort ein und trennen Sie sie mit ',' voneinander. Wenn keine Antwort richtig ist geben Sie '-' ein.");
+            if (eingabe == "-" && this.rightAnswers.length == 0)
+                answeredCorrect = true;
+            else if (eingabe == "-" && this.rightAnswers.length != 0)
+                answeredCorrect = false;
+            else {
+                let eingabeSplitted = eingabe.split(",");
+                let j;
+                while (eingabeSplitted.length > 0) {
+                    j = parseInt(eingabeSplitted[0]);
+                    eingabeSplitted.splice(0, 1);
+                    if (this.answers.indexOf(randomizedAnswers[j]) <= this.rightAnswers.length - 1)
+                        answeredCorrect = true;
+                    else
+                        answeredCorrect = false;
+                }
+            }
+            return answeredCorrect;
+        }
     }
     Quiz.MultipleChoiceQuestion = MultipleChoiceQuestion;
 })(Quiz || (Quiz = {}));

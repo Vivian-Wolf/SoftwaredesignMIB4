@@ -1,7 +1,7 @@
 namespace Quiz {
-    
+
     let punktestand: number = 0;
-    let fragen: Question [];
+    let fragen: Question[];
     let i: number;
 
     while (i != 3) {
@@ -10,14 +10,17 @@ namespace Quiz {
         if (i == 1) {
             let correct: boolean;
             correct = answerRandomQuestion(fragen);
-            if (correct == true)
+            if (correct == true) {
+                console.log("Richtig! Du hast einen Punkt für deine Antwort erhalten!");
                 punktestand++;
-            else
-                console.log(correct);
+            }
+            else {
+                console.log("Falsch!");
+            }
         } else if (i == 2)
             customQuestionBuilder();
         else
-            console.log("Um das Programm neu zu starten, laden Sie bitte die Seite neu");    
+            console.log("Um das Programm neu zu starten, laden Sie bitte die Seite neu");
     }
 
     function answerRandomQuestion(_fragen: Question[]): boolean {
@@ -35,11 +38,23 @@ namespace Quiz {
         questionType = parseInt(prompt("Fragentyp wählen: 1 = einfache Frage, 2 = Ja-/Nein-Frage, 3 = Multiple-Choice-Frage, 4 = Schätzfrage, 5 =Textfrage"));
         question = prompt("Bitte neue Frage eingeben");
 
-        switch (questionType){
+        switch (questionType) {
             case 1:
-                neueFrage = SingleQuestion.addNewQuestion;
+                neueFrage = SingleQuestion.addNewQuestion();
+                break;
+            case 2:
+                neueFrage = YesNoQuestion.addNewQuestion();
+                break;
+            case 3:
+                neueFrage = MultipleChoiceQuestion.addNewQuestion();
+                break;
+            case 4:
+                neueFrage = GuessQuestion.addNewQuestion();
+                break;
+            case 5:
+                neueFrage = TextQuestion.addNewQuestion();
                 break;
         }
-
+        fragen.push(neueFrage);
     }
 }

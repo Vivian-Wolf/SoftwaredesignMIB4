@@ -1,17 +1,13 @@
-namespace Quiz {
-    export abstract class Question {
-        public question: string;
-
-        constructor(_question: string) {
+"use strict";
+var Quiz;
+(function (Quiz) {
+    class Question {
+        constructor(_question) {
             this.question = _question;
         }
-
-        //abstract answerQuestion(): boolean;
-        abstract addNewQuestion(_question: string): Question;
-        
-        addWrongAnswer(_answers: string[]): string[] {
-            let wrongAnswer: string;
-            let auswahl: number;
+        addWrongAnswer(_answers) {
+            let wrongAnswer;
+            let auswahl;
             wrongAnswer = prompt("Falsche Antwort eingeben");
             _answers.push(wrongAnswer);
             while (auswahl != 1) {
@@ -20,10 +16,13 @@ namespace Quiz {
                     wrongAnswer = prompt("Falsche Antwort eingeben");
                     _answers.push(wrongAnswer);
                     auswahl = 2;
-                } else
+                }
+                else
                     break;
             }
             return _answers;
         }
     }
-}
+    Quiz.Question = Question;
+})(Quiz || (Quiz = {}));
+//# sourceMappingURL=Question.js.map

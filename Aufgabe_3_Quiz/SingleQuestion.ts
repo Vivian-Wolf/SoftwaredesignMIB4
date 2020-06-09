@@ -19,14 +19,14 @@ namespace Quiz {
         }
 
         answerQuestion(): boolean {
-            let possibleAnswers: string [];
+            let possibleAnswers: string [] = this.answers;
             let i: number = 0;
             let answeredCorrect: boolean = false;
             let randomizedAnswer: string;
 
             console.log(this.question);
             
-            while (randomizedAnswer.length > 0) {
+            while (possibleAnswers.length > 0) {
             let j: number = Math.floor(Math.random() * possibleAnswers.length - 1);
             randomizedAnswer = possibleAnswers[j];
             possibleAnswers.splice(j, 1);

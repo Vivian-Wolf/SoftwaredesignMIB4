@@ -15,12 +15,12 @@ var Quiz;
             return neueFrage;
         }
         answerQuestion() {
-            let possibleAnswers;
+            let possibleAnswers = this.answers;
             let i = 0;
             let answeredCorrect = false;
             let randomizedAnswer;
             console.log(this.question);
-            while (randomizedAnswer.length > 0) {
+            while (possibleAnswers.length > 0) {
                 let j = Math.floor(Math.random() * possibleAnswers.length - 1);
                 randomizedAnswer = possibleAnswers[j];
                 possibleAnswers.splice(j, 1);

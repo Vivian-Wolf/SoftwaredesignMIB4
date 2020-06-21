@@ -1,0 +1,30 @@
+"use strict";
+var Lection_Tree;
+(function (Lection_Tree) {
+    let habsburgerStammbaum = new Lection_Tree.Tree();
+    habsburgerStammbaum.name = "Habsburg";
+    let philippI = habsburgerStammbaum.createNode("Phillip I.");
+    let karlV = habsburgerStammbaum.createNode("Karl V.");
+    let ferdinandI = habsburgerStammbaum.createNode("Ferdinand I.");
+    let philippII = habsburgerStammbaum.createNode("Phillip II.");
+    let maximilianII = habsburgerStammbaum.createNode("Maximilian II.");
+    let ferdinandIITirol = habsburgerStammbaum.createNode("Ferdinand III. von Tirol");
+    let karlII = habsburgerStammbaum.createNode("Karl III.");
+    let phillipIII = habsburgerStammbaum.createNode("Phillip III.");
+    let rudolfII = habsburgerStammbaum.createNode("Rudolf II.");
+    let matthias = habsburgerStammbaum.createNode("Matthias");
+    let ferdinandII = habsburgerStammbaum.createNode("Ferdinand II");
+    let leopoldV = habsburgerStammbaum.createNode("Leopold V.");
+    philippI.appendChild(karlV);
+    karlV.appendChild(philippII);
+    philippII.appendChild(phillipIII);
+    philippI.appendChild(maximilianII);
+    maximilianII.appendChild(rudolfII);
+    maximilianII.appendChild(matthias);
+    ferdinandI.appendChild(ferdinandIITirol);
+    ferdinandI.appendChild(karlII);
+    karlII.appendChild(ferdinandII);
+    karlII.appendChild(leopoldV);
+    console.log(habsburgerStammbaum.printTree());
+})(Lection_Tree || (Lection_Tree = {}));
+//# sourceMappingURL=main.js.map

@@ -1,7 +1,6 @@
 "use strict";
 //Lektion 2 Übungen
 var Lektion_2;
-//Lektion 2 Übungen
 (function (Lektion_2) {
     // Deklaration und Definiton von Variablen
     //Variablen werden am Anfang klein geschreiben, keine Lehrzeichen, keine Sonderzeichen, außer $ und _ , darf nicht mit Zahl anfangen

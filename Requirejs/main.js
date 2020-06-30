@@ -1,6 +1,6 @@
-"use strict";
-var Calculator;
-(function (Calculator) {
+define(["require", "exports", "./Ops"], function (require, exports, Ops_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     console.log("Welcome to the Calculator. Start entering calculations.");
     for (;;) {
         console.log("> ");
@@ -40,11 +40,12 @@ var Calculator;
                 prompt("" + result);
                 break;
             case "^":
-                let po = require("./Ops");
-                result = po.power(left, right);
+                result = Ops_1.Ops.power(left, right);
+                prompt("" + result);
                 break;
             case "#":
-                result = Calculator.Ops.greatestCommonDenominator(left, right);
+                result = Ops_1.Ops.greatestCommonDenominator(left, right);
+                prompt("" + result);
                 break;
             default:
                 prompt("default");
@@ -53,10 +54,10 @@ var Calculator;
     }
     function findFirtstNonDigit(_s) {
         for (let i = 0; i < _s.length; i++) {
-            if (_s.charAt(i) == "+" || _s.charAt(i) == "-" || _s.charAt(i) == "*" || _s.charAt(i) == "/")
+            if (_s.charAt(i) == "+" || _s.charAt(i) == "-" || _s.charAt(i) == "*" || _s.charAt(i) == "/" || _s.charAt(i) == "^" || _s.charAt(i) == "#")
                 return i;
         }
         return -1;
     }
-})(Calculator || (Calculator = {}));
+});
 //# sourceMappingURL=main.js.map

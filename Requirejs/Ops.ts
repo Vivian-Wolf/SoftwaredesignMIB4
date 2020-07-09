@@ -1,4 +1,3 @@
-
 export class Ops {
     static power(_a: number, _exp: number): number {
         let result: number = 1;

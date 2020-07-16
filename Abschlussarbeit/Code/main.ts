@@ -6,6 +6,7 @@ namespace Abschluss {
 
     let castleEntry: Room;
     castleEntry = new Room("Eingang des Schlosses", "pächtiger, überwältigender Eingang", 0, 0);
+    castleEntry.objectsInRoom.push("eine Perücke", "ein paar Pferdezügel", "ein Armulet");
 
     let secretPassage: Room;
     secretPassage = new Room("Geheimgang", "düsterer, schmaler Gang", -1, 0);
@@ -57,7 +58,7 @@ namespace Abschluss {
                 userInput.setAttribute("name", "userInput");
                 userInput.setAttribute("type", "text");
                 userInput.setAttribute("id", "userInput");
-                userInput.setAttribute("onkeyup", "Abschluss.changePosition(Abschluss.submitForm())");
+                userInput.setAttribute("onkeyup", "Abschluss.processUserInput(Abschluss.submitForm())");
 
                 let inputLabel: HTMLElement = document.createElement("label");
                 inputLabel.innerText = "What would you like to do?:";
@@ -83,13 +84,70 @@ namespace Abschluss {
             }
     }
 
-
-
     export function submitForm(): string {
         let textInput: string = (<HTMLInputElement>document.getElementById("userInput")).value;
-
         return textInput;
     }
 
+    export function processUserInput(_userInput: String): void {
+        switch (_userInput) {
+            case "c": {
+                showCommands();
+                break;
+            }
+            case "l": {
+                look();
+                break;
+            }
+            case "t": {
+                takeItem();
+                break;
+            }
+            case "g": {
+                dropItem();
+                break;
+            }
+            case "q": {
+                attack();
+                break;
+            }
+            case "u": {
+                useItem();
+                break;
+            }
+            case "i": {
+                showInventory();
+                break;
+            }
+            case "a": {
+                changePosition(submitForm());
+                break;
+            }
+            case "w": {
+                changePosition(submitForm());
+                break;
+            }
+            case "d": {
+                changePosition(submitForm());
+                break;
+            }
+            case "s": {
+                changePosition(submitForm());
+                break;
+            }
+            case "e": {
+                talk();
+                break;
+            }
+            case "p": {
+                break;
+            }
+            default: {
+                console.log("Please select the direction you want to go ( north(n), east(e), west(w), south(s)");
+                break;
+            }
+        }
+
+    }
 }
 

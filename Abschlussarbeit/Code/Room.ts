@@ -35,4 +35,15 @@ namespace Abschluss {
         return roomNotThere;
     }
 
+    export function look(): void {
+        let foundRoom: Room = gameMap.find(i => i.posX === player.posX && i.posY === player.posY);
+        let newParagraph: HTMLElement = document.createElement("P");               // Create a <p> element
+        newParagraph.innerText = "Du befindest dich im " + foundRoom.name + ": " + foundRoom.description + " \n \n Du siehst: \n ";
+        for (let i: number = 0; i < foundRoom.objectsInRoom.length; i++) {
+            newParagraph.innerText += foundRoom.objectsInRoom[i] + " \n ";
+            document.body.appendChild(newParagraph);
+        }               // Insert text
+        createBodyElements();
+    }
+
 }

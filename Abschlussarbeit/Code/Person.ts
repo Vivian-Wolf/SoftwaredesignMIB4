@@ -8,7 +8,6 @@ namespace Abschluss {
     }
 
     export function changePosition(_userInput: String): void {
-        console.log("Please select the direction you want to go ( north(w), east(a), west(d), south(s)");
         // Backups the current position in case there is no room where the player is moving to
         let playerposXBackup: number = player.posX;
         let playerposYBackup: number = player.posY;
@@ -44,4 +43,5 @@ namespace Abschluss {
         else {
             console.log("New position: " + player.posX + " " + player.posY);
         }
+    }
 }

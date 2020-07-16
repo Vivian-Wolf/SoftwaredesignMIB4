@@ -9,7 +9,6 @@ var Abschluss;
     }
     Abschluss.Person = Person;
     function changePosition(_userInput) {
-        console.log("Please select the direction you want to go ( north(w), east(a), west(d), south(s)");
         // Backups the current position in case there is no room where the player is moving to
         let playerposXBackup = Abschluss.player.posX;
         let playerposYBackup = Abschluss.player.posY;

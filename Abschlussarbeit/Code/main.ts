@@ -23,6 +23,7 @@ namespace Abschluss {
     kingsDressingRoom = new Room("Ankleidezimmer des Königs", "die privaten Gemächer des Königs", 1, 1);
 
     export let player: Person = new Person;
+    player.name = "Lord Mercier";
 
     pushMaps();
 
@@ -35,57 +36,60 @@ namespace Abschluss {
         gameMap.push(kingsDressingRoom);
     }
 
-    export function changePosition(_userInput: String): void {
-        console.log("Please select the direction you want to go ( north(w), east(a), west(d), south(s)");
-        // Backups the current position in case there is no room where the player is moving to
-        let playerposXBackup: number = player.posX;
-        let playerposYBackup: number = player.posY;
 
-        //Debug Step
-        console.log(_userInput);
-        //Debug End
+    let para: HTMLElement = document.createElement("P");               // Create a <p> element
+    para.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";               // Insert text
+    document.body.appendChild(para); //Add to body  
 
-        switch (_userInput) {
-            // Changes Player position based on input
-            case "w": {
-                player.posY += 1;
-                break;
-            }
-            case "a": {
-                player.posX -= 1;
-                break;
-            }
-            case "d": {
-                player.posX += 1;
-                break;
-            }
-            case "s": {
-                player.posY -= 1;
-                break;
-            }
-            default: {
-                console.log("Please select the direction you want to go ( north(n), east(e), west(w), south(s)");
-                break;
-            }
-        }
+    let form: HTMLElement = document.createElement("form");
+    form.setAttribute("id", "form");
 
-        if (findRoom() == true) {
-            player.posX = playerposXBackup;
-            player.posY = playerposYBackup;
-            console.log("Position reset to " + player.posX + " " + player.posY);
-        }
-        else {
-            console.log("New position: " + player.posX + " " + player.posY);
-        }
+    let elementsCreated: number = 0;
+    createBodyElements();
+
+    export function createBodyElements(): void {
+
+        for (let i: number = 0; i < 2; i++)
+
+            if (elementsCreated == 0) {
+
+                let userInput: HTMLElement = document.createElement("input");
+                userInput.setAttribute("name", "userInput");
+                userInput.setAttribute("type", "text");
+                userInput.setAttribute("id", "userInput");
+                userInput.setAttribute("onkeyup", "Abschluss.changePosition(Abschluss.submitForm())");
+
+                let inputLabel: HTMLElement = document.createElement("label");
+                inputLabel.innerText = "What would you like to do?:";
+                inputLabel.setAttribute("id", "label");
+                inputLabel.setAttribute("for", "userInput");
+
+                form.appendChild(inputLabel);
+                form.appendChild(userInput);
+                document.body.appendChild(form);
+                elementsCreated++;
+
+                if (i == 0) {
+                    break;
+                }
+            }
+            else {
+                let userInput: HTMLElement = document.getElementById("userInput");
+                let inputLabel: HTMLElement = document.getElementById("label");
+                form.removeChild(inputLabel);
+                form.removeChild(userInput);
+                document.body.removeChild(form);
+                elementsCreated = 0;
+            }
     }
+
+
 
     export function submitForm(): string {
         let textInput: string = (<HTMLInputElement>document.getElementById("userInput")).value;
-        document.getElementById("userInput").nodeValue = null;
+
         return textInput;
     }
-
-    //changePosition(submitForm());
 
 }
 

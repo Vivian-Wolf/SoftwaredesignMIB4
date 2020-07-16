@@ -24,7 +24,11 @@ var Abschluss;
             roomNotThere = true;
         }
         else {
+            let newParagraph = document.createElement("P"); // Create a <p> element
+            newParagraph.innerText = "Du befindest dich im " + foundRoom.name + ": " + foundRoom.description; // Insert text
+            document.body.appendChild(newParagraph); //Add to body  
             console.log(foundRoom.name + ": " + foundRoom.description);
+            Abschluss.createBodyElements();
             roomNotThere = false;
         }
         return roomNotThere;

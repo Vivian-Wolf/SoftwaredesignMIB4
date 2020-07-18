@@ -1,6 +1,5 @@
 namespace Abschluss {
     export class Player extends Person {
-
         public inventory: String[] = [];
 
         constructor(_name: String) {
@@ -35,7 +34,6 @@ namespace Abschluss {
                     break;
                 }
                 default: {
-                    console.log("Please select the direction you want to go ( north(n), east(e), west(w), south(s)");
                     break;
                 }
             }
@@ -87,7 +85,7 @@ namespace Abschluss {
                     inventoryParagraph.innerText += this.inventory[i];
                 }
             }
-
+            document.body.appendChild(inventoryParagraph);
         }
         public takeItem(_userInput: string): void {
             let itemToPick: string;
@@ -113,7 +111,7 @@ namespace Abschluss {
             let indexOfItemToDrop: number;
 
             itemToDrop = _userInput;
-            indexOfItemToDrop = this.findPositionOfItemToPick(itemToDrop);
+            indexOfItemToDrop = this.findPositionOfItemToDrop(itemToDrop);
 
             if (indexOfItemToDrop > -1) {
                 this.currentRoom.objectsInRoom.push(_userInput);
@@ -130,12 +128,18 @@ namespace Abschluss {
 
         public findPositionOfItemToPick(_itemToCheck: string): number {
             let indexOfObjetInTheRoom: number;
-            let currentPosition: Room;
 
-            currentPosition = this.currentRoom;
-            indexOfObjetInTheRoom = currentPosition.objectsInRoom.indexOf(_itemToCheck);
+            indexOfObjetInTheRoom = this.currentRoom.objectsInRoom.indexOf(_itemToCheck);
 
             return indexOfObjetInTheRoom;
+        }
+
+        public findPositionOfItemToDrop(_itemToCheck: string): number {
+            let indexOfObjetInTheInventory: number;
+            
+            indexOfObjetInTheInventory = this.inventory.indexOf(_itemToCheck);
+
+            return indexOfObjetInTheInventory;
         }
 
         public attack(): void {

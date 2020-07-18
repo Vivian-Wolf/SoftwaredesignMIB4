@@ -32,9 +32,9 @@ var Abschluss;
     }
     let player = new Abschluss.Player("Lord Mercier");
     player.currentRoom = castleEntry;
-    let para = document.createElement("P"); // Create a <p> element
-    para.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal."; // Insert text
-    document.body.appendChild(para); //Add to body  
+    let para = document.createElement("P");
+    para.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";
+    document.body.appendChild(para);
     let form = document.createElement("form");
     form.setAttribute("id", "form");
     let elementsCreated = 0;
@@ -127,7 +127,9 @@ var Abschluss;
                 break;
             }
             default: {
-                console.log("Please select the direction you want to go ( north(n), east(e), west(w), south(s)");
+                let paragraph = document.createElement("P"); // Create a <p> element
+                paragraph.innerText = "Diese Aktion steht nicht zur Verfügung."; // Insert text
+                document.body.appendChild(paragraph);
                 createBodyElements();
                 break;
             }
@@ -144,15 +146,24 @@ var Abschluss;
         let inputLabel = document.getElementById("label");
         inputLabel.innerText = "Welches Item soll ausgewählt werden?:";
         let inputField = document.getElementById("userInput");
-        inputField.setAttribute("onchange", "Abschluss.player.takeItem(Abschluss.submitCharInput())");
+        inputField.removeAttribute("onchange");
+        inputField.setAttribute("onchange", "Abschluss.takeItemFromRoom(Abschluss.submitCharInput())");
     }
+    function takeItemFromRoom(_itemToPick) {
+        player.takeItem(_itemToPick);
+    }
+    Abschluss.takeItemFromRoom = takeItemFromRoom;
     function createBodyElementsForItemDrop() {
         createBodyElements();
         let inputLabel = document.getElementById("label");
         inputLabel.innerText = "Welches Item soll ausgewählt werden?:";
         let inputField = document.getElementById("userInput");
-        inputField.setAttribute("onchange", "Abschluss.player.dropItem(Abschluss.submitCharInput())");
+        inputField.setAttribute("onchange", "Abschluss.dropItemFromInventory(Abschluss.submitCharInput())");
     }
+    function dropItemFromInventory(_itemToPick) {
+        player.dropItem(_itemToPick);
+    }
+    Abschluss.dropItemFromInventory = dropItemFromInventory;
     function createInputFieldWithLabel() {
         let userInput = document.createElement("input");
         userInput.setAttribute("name", "userInput");
@@ -160,7 +171,7 @@ var Abschluss;
         userInput.setAttribute("id", "userInput");
         userInput.setAttribute("onchange", "Abschluss.processUserInput(Abschluss.submitCharInput())");
         let inputLabel = document.createElement("label");
-        inputLabel.innerText = "What would you like to do?:";
+        inputLabel.innerText = "Was möchtest du tun?:";
         inputLabel.setAttribute("id", "label");
         inputLabel.setAttribute("for", "userInput");
         form.appendChild(inputLabel);

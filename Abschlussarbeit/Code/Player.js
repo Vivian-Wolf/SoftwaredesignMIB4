@@ -33,7 +33,6 @@ var Abschluss;
                     break;
                 }
                 default: {
-                    console.log("Please select the direction you want to go ( north(n), east(e), west(w), south(s)");
                     break;
                 }
             }
@@ -82,6 +81,7 @@ var Abschluss;
                     inventoryParagraph.innerText += this.inventory[i];
                 }
             }
+            document.body.appendChild(inventoryParagraph);
         }
         takeItem(_userInput) {
             let itemToPick;
@@ -104,7 +104,7 @@ var Abschluss;
             let itemToDrop;
             let indexOfItemToDrop;
             itemToDrop = _userInput;
-            indexOfItemToDrop = this.findPositionOfItemToPick(itemToDrop);
+            indexOfItemToDrop = this.findPositionOfItemToDrop(itemToDrop);
             if (indexOfItemToDrop > -1) {
                 this.currentRoom.objectsInRoom.push(_userInput);
                 this.inventory.splice(indexOfItemToDrop, 1);
@@ -119,10 +119,13 @@ var Abschluss;
         }
         findPositionOfItemToPick(_itemToCheck) {
             let indexOfObjetInTheRoom;
-            let currentPosition;
-            currentPosition = this.currentRoom;
-            indexOfObjetInTheRoom = currentPosition.objectsInRoom.indexOf(_itemToCheck);
+            indexOfObjetInTheRoom = this.currentRoom.objectsInRoom.indexOf(_itemToCheck);
             return indexOfObjetInTheRoom;
+        }
+        findPositionOfItemToDrop(_itemToCheck) {
+            let indexOfObjetInTheInventory;
+            indexOfObjetInTheInventory = this.inventory.indexOf(_itemToCheck);
+            return indexOfObjetInTheInventory;
         }
         attack() {
             console.log("Attack!");

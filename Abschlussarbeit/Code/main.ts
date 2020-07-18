@@ -42,9 +42,9 @@ namespace Abschluss {
     let player: Player = new Player("Lord Mercier");
     player.currentRoom = castleEntry;
 
-    let para: HTMLElement = document.createElement("P");               // Create a <p> element
-    para.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";               // Insert text
-    document.body.appendChild(para); //Add to body  
+    let para: HTMLElement = document.createElement("P");
+    para.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";
+    document.body.appendChild(para);
 
     let form: HTMLElement = document.createElement("form");
     form.setAttribute("id", "form");
@@ -143,7 +143,9 @@ namespace Abschluss {
                 break;
             }
             default: {
-                console.log("Please select the direction you want to go ( north(n), east(e), west(w), south(s)");
+                let paragraph: HTMLElement = document.createElement("P");               // Create a <p> element
+                paragraph.innerText = "Diese Aktion steht nicht zur Verfügung.";               // Insert text
+                document.body.appendChild(paragraph);
                 createBodyElements();
                 break;
             }
@@ -163,7 +165,12 @@ namespace Abschluss {
         inputLabel.innerText = "Welches Item soll ausgewählt werden?:";
 
         let inputField: HTMLElement = document.getElementById("userInput");
-        inputField.setAttribute("onchange", "Abschluss.player.takeItem(Abschluss.submitCharInput())");
+        inputField.removeAttribute("onchange");
+        inputField.setAttribute("onchange", "Abschluss.takeItemFromRoom(Abschluss.submitCharInput())");
+    }
+
+    export function takeItemFromRoom(_itemToPick: string): void {
+        player.takeItem(_itemToPick);
     }
 
     function createBodyElementsForItemDrop(): void {
@@ -173,7 +180,11 @@ namespace Abschluss {
         inputLabel.innerText = "Welches Item soll ausgewählt werden?:";
 
         let inputField: HTMLElement = document.getElementById("userInput");
-        inputField.setAttribute("onchange", "Abschluss.player.dropItem(Abschluss.submitCharInput())");
+        inputField.setAttribute("onchange", "Abschluss.dropItemFromInventory(Abschluss.submitCharInput())");
+    }
+
+    export function dropItemFromInventory(_itemToPick: string): void {
+        player.dropItem(_itemToPick);
     }
 
     function createInputFieldWithLabel(): void {
@@ -184,7 +195,7 @@ namespace Abschluss {
         userInput.setAttribute("onchange", "Abschluss.processUserInput(Abschluss.submitCharInput())");
 
         let inputLabel: HTMLElement = document.createElement("label");
-        inputLabel.innerText = "What would you like to do?:";
+        inputLabel.innerText = "Was möchtest du tun?:";
         inputLabel.setAttribute("id", "label");
         inputLabel.setAttribute("for", "userInput");
 

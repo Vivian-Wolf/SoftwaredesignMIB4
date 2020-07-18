@@ -8,16 +8,19 @@ var Abschluss;
     castleEntry.objectsInRoom.push("eine Perücke", "ein paar Pferdezügel", "ein Armulet");
     let secretPassage;
     secretPassage = new Abschluss.Room("Geheimgang", "düsterer, schmaler Gang", -1, 0);
+    secretPassage.objectsInRoom.push("eine Zange", "ein Kettenhemd");
     let bastille;
     bastille = new Abschluss.Room("Bastille", "hohe Gefängnismauern, in ihnen die berüchtigsten Mörder der Stadt", -1, 1);
+    bastille.objectsInRoom.push("Knochen", "Fesseln", "einen Finger");
     let castleGarden;
     castleGarden = new Abschluss.Room("Schlossgarten", "außerordentlich schöne Gewächse, vom besten Gärtner der Stadt", 0, 1);
+    castleGarden.objectsInRoom.push("eine Blume", "ein Dolch", "Dornen");
     let mirrorHall;
     mirrorHall = new Abschluss.Room("Spiegelsaal", "tausend Spiegel, tausend Schönheiten", 1, 0);
+    mirrorHall.objectsInRoom.push("ein Spiegel");
     let kingsDressingRoom;
     kingsDressingRoom = new Abschluss.Room("Ankleidezimmer des Königs", "die privaten Gemächer des Königs", 1, 1);
-    Abschluss.player = new Abschluss.Person;
-    Abschluss.player.name = "Lord Mercier";
+    kingsDressingRoom.objectsInRoom.push("eine Kerze", "ein Schlüssel");
     pushMaps();
     function pushMaps() {
         Abschluss.gameMap.push(castleEntry);
@@ -27,8 +30,10 @@ var Abschluss;
         Abschluss.gameMap.push(mirrorHall);
         Abschluss.gameMap.push(kingsDressingRoom);
     }
+    let player = new Abschluss.Player("Lord Mercier");
+    player.currentRoom = castleEntry;
     let para = document.createElement("P"); // Create a <p> element
-    para.innerText = "Herzlich Willkommen in Versailles " + Abschluss.player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal."; // Insert text
+    para.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal."; // Insert text
     document.body.appendChild(para); //Add to body  
     let form = document.createElement("form");
     form.setAttribute("id", "form");
@@ -37,18 +42,7 @@ var Abschluss;
     function createBodyElements() {
         for (let i = 0; i < 2; i++)
             if (elementsCreated == 0) {
-                let userInput = document.createElement("input");
-                userInput.setAttribute("name", "userInput");
-                userInput.setAttribute("type", "text");
-                userInput.setAttribute("id", "userInput");
-                userInput.setAttribute("onkeyup", "Abschluss.processUserInput(Abschluss.submitForm())");
-                let inputLabel = document.createElement("label");
-                inputLabel.innerText = "What would you like to do?:";
-                inputLabel.setAttribute("id", "label");
-                inputLabel.setAttribute("for", "userInput");
-                form.appendChild(inputLabel);
-                form.appendChild(userInput);
-                document.body.appendChild(form);
+                createInputFieldWithLabel();
                 elementsCreated++;
                 if (i == 0) {
                     break;
@@ -64,59 +58,69 @@ var Abschluss;
             }
     }
     Abschluss.createBodyElements = createBodyElements;
-    function submitForm() {
+    function submitCharInput() {
         let textInput = document.getElementById("userInput").value;
         return textInput;
     }
-    Abschluss.submitForm = submitForm;
+    Abschluss.submitCharInput = submitCharInput;
     function processUserInput(_userInput) {
         switch (_userInput) {
             case "c": {
                 showCommands();
+                createBodyElements();
                 break;
             }
             case "l": {
-                Abschluss.look();
+                player.look();
+                createBodyElements();
                 break;
             }
             case "t": {
-                takeItem();
+                createBodyElementsForItemPicker();
                 break;
             }
             case "g": {
-                dropItem();
+                createBodyElementsForItemDrop();
                 break;
             }
             case "q": {
-                attack();
+                player.attack();
+                createBodyElements();
                 break;
             }
             case "u": {
-                useItem();
+                player.useItem();
+                createBodyElements();
                 break;
             }
             case "i": {
-                showInventory();
+                player.showInventory();
+                createBodyElements();
                 break;
             }
             case "a": {
-                Abschluss.changePosition(submitForm());
+                player.changePosition(submitCharInput());
+                createBodyElements();
                 break;
             }
             case "w": {
-                Abschluss.changePosition(submitForm());
+                player.changePosition(submitCharInput());
+                createBodyElements();
                 break;
             }
             case "d": {
-                Abschluss.changePosition(submitForm());
+                player.changePosition(submitCharInput());
+                createBodyElements();
                 break;
             }
             case "s": {
-                Abschluss.changePosition(submitForm());
+                player.changePosition(submitCharInput());
+                createBodyElements();
                 break;
             }
             case "e": {
-                talk();
+                player.speak();
+                createBodyElements();
                 break;
             }
             case "p": {
@@ -124,10 +128,44 @@ var Abschluss;
             }
             default: {
                 console.log("Please select the direction you want to go ( north(n), east(e), west(w), south(s)");
+                createBodyElements();
                 break;
             }
         }
     }
     Abschluss.processUserInput = processUserInput;
+    function showCommands() {
+        let paragraph = document.createElement("P"); // Create a <p> element
+        paragraph.innerText = "Folgende Kommandos stehen zur Verfügung: \n kommandos (c), umschauen (l), nach Norden (w) / Süden (s) / Osten (d) / Westen (a) gehen, Inventar anzeigen (i), Item aufnehmen (t), Item zurücklegen (d), Item benutzen (u), attack (a), mit Person sprechen (e),  Spiel beenden (q)"; // Insert text
+        document.body.appendChild(paragraph);
+    }
+    function createBodyElementsForItemPicker() {
+        createBodyElements();
+        let inputLabel = document.getElementById("label");
+        inputLabel.innerText = "Welches Item soll ausgewählt werden?:";
+        let inputField = document.getElementById("userInput");
+        inputField.setAttribute("onchange", "Abschluss.player.takeItem(Abschluss.submitCharInput())");
+    }
+    function createBodyElementsForItemDrop() {
+        createBodyElements();
+        let inputLabel = document.getElementById("label");
+        inputLabel.innerText = "Welches Item soll ausgewählt werden?:";
+        let inputField = document.getElementById("userInput");
+        inputField.setAttribute("onchange", "Abschluss.player.dropItem(Abschluss.submitCharInput())");
+    }
+    function createInputFieldWithLabel() {
+        let userInput = document.createElement("input");
+        userInput.setAttribute("name", "userInput");
+        userInput.setAttribute("type", "text");
+        userInput.setAttribute("id", "userInput");
+        userInput.setAttribute("onchange", "Abschluss.processUserInput(Abschluss.submitCharInput())");
+        let inputLabel = document.createElement("label");
+        inputLabel.innerText = "What would you like to do?:";
+        inputLabel.setAttribute("id", "label");
+        inputLabel.setAttribute("for", "userInput");
+        form.appendChild(inputLabel);
+        form.appendChild(userInput);
+        document.body.appendChild(form);
+    }
 })(Abschluss || (Abschluss = {}));
 //# sourceMappingURL=main.js.map

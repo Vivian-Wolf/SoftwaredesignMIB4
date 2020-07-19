@@ -42,6 +42,21 @@ namespace Abschluss {
     let player: Player = new Player("Lord Mercier");
     player.currentRoom = castleEntry;
 
+    let prisoners: Enemy = new Enemy ("Gefangene", bastille, 40);
+    bastille.personsInRoom.push(prisoners);
+    
+    let guardGarden: Enemy = new Enemy("Garde", castleGarden, 60);
+    castleGarden.personsInRoom.push(guardGarden);
+
+    let guardEntry: Enemy = new Enemy("Garde", castleEntry, 100);
+    castleEntry.personsInRoom.push(guardEntry);
+
+    let king: NormalPerson = new NormalPerson ("König", mirrorHall, 200);
+    mirrorHall.personsInRoom.push(king);
+
+    let mistress: NormalPerson = new NormalPerson("Geliebte des Königs", kingsDressingRoom, 50);
+    kingsDressingRoom.personsInRoom.push(mistress);
+
     let para: HTMLElement = document.createElement("P");
     para.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";
     document.body.appendChild(para);

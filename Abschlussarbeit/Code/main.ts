@@ -41,17 +41,18 @@ namespace Abschluss {
 
     let player: Player = new Player("Lord Mercier");
     player.currentRoom = castleEntry;
+    player.lifepoints = 100;
 
-    let prisoners: Enemy = new Enemy ("Gefangene", bastille, 40);
+    let prisoners: Enemy = new Enemy("Gefangene", bastille, 40);
     bastille.personsInRoom.push(prisoners);
-    
+
     let guardGarden: Enemy = new Enemy("Garde", castleGarden, 60);
     castleGarden.personsInRoom.push(guardGarden);
 
     let guardEntry: Enemy = new Enemy("Garde", castleEntry, 100);
     castleEntry.personsInRoom.push(guardEntry);
 
-    let king: NormalPerson = new NormalPerson ("König", mirrorHall, 200);
+    let king: NormalPerson = new NormalPerson("König", mirrorHall, 200);
     mirrorHall.personsInRoom.push(king);
 
     let mistress: NormalPerson = new NormalPerson("Geliebte des Königs", kingsDressingRoom, 50);
@@ -115,8 +116,7 @@ namespace Abschluss {
                 break;
             }
             case "q": {
-                player.attack();
-                createBodyElements();
+                createBodyElementsForAttack();
                 break;
             }
             case "u": {
@@ -217,6 +217,52 @@ namespace Abschluss {
         form.appendChild(inputLabel);
         form.appendChild(userInput);
         document.body.appendChild(form);
+    }
+
+    function createBodyElementsForAttack(): void {
+        createBodyElements();
+
+        let inputLabel: HTMLElement = document.getElementById("label");
+        inputLabel.innerText = "Welche Person soll attackiert werden?:";
+
+        let inputField: HTMLElement = document.getElementById("userInput");
+        inputField.removeAttribute("onchange");
+        inputField.setAttribute("onchange", "Abschluss.checkIfPersonCanBeAttacked(Abschluss.submitCharInput())");
+    }
+
+    export function checkIfPersonCanBeAttacked(_personToAttack: string): void {
+
+        let personIsPartOfRoom: number = findPersonInRoom(_personToAttack);
+
+        if (personIsPartOfRoom == -1) {
+            let paragraph: HTMLElement = document.createElement("P");               // Create a <p> element
+            paragraph.innerText = "Die Person, die du attackieren möchtest befindet sich nicht im Raum.";               // Insert text
+            document.body.appendChild(paragraph);
+            createBodyElements();
+        } else {
+            if (player.currentRoom.personsInRoom[personIsPartOfRoom].canBeAttacked == true) {
+                player.attack(player.currentRoom.personsInRoom[personIsPartOfRoom]);
+            } else {
+                let paragraph: HTMLElement = document.createElement("P");               // Create a <p> element
+                paragraph.innerText = "Die Person, die du attackieren möchtest ist nicht dein Feind. Du kannst diese Person nicht attackieren.";               // Insert text
+                document.body.appendChild(paragraph);
+                createBodyElements();
+            }
+        }   
+    }
+
+    function findPersonInRoom(_personToFind: string): number {
+        let indexOfFoundPerson: number = -1;
+        let personIsInRoom: boolean = false;
+        let personsToCheck: Person[] = player.currentRoom.personsInRoom;
+
+        for (let i: number = 0; i < player.currentRoom.personsInRoom.length; i++) {
+            if (personsToCheck[i].name == _personToFind) {
+                personIsInRoom = true;
+                indexOfFoundPerson = i;
+            }
+        }
+        return indexOfFoundPerson;
     }
 }
 

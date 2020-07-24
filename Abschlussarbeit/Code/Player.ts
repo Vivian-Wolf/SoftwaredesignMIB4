@@ -62,16 +62,7 @@ namespace Abschluss {
         }
 
         public look(): void {
-            let newParagraph: HTMLElement = document.createElement("P");               // Create a <p> element
-            newParagraph.innerHTML = "Du befindest dich im " + this.currentRoom.name + ": " + this.currentRoom.description + " \n \n Du siehst: \n ";
-            if (this.currentRoom.objectsInRoom.length == 0) {
-                newParagraph.innerHTML = "Du befindest dich im " + this.currentRoom.name + ": " + this.currentRoom.description;
-                document.body.appendChild(newParagraph);
-            }
-            for (let i: number = 0; i < this.currentRoom.objectsInRoom.length; i++) {
-                newParagraph.innerText += this.currentRoom.objectsInRoom[i] + " \n ";
-                document.body.appendChild(newParagraph);
-            }               // Insert text
+            this.currentRoom.toString();
         }
 
         public showInventory(): void {
@@ -98,8 +89,8 @@ namespace Abschluss {
                 this.inventory.push(_userInput);
                 this.currentRoom.objectsInRoom.splice(indexOfItemToPick, 1);
             } else {
-                let paragraph: HTMLElement = document.createElement("P");               // Create a <p> element
-                paragraph.innerText = "Dieses Item befindet sich nicht im aktuellen Raum.";               // Insert text
+                let paragraph: HTMLElement = document.createElement("P");
+                paragraph.innerText = "Dieses Item befindet sich nicht im aktuellen Raum.";
                 document.body.appendChild(paragraph);
             }
             this.look();
@@ -117,8 +108,8 @@ namespace Abschluss {
                 this.currentRoom.objectsInRoom.push(_userInput);
                 this.inventory.splice(indexOfItemToDrop, 1);
             } else {
-                let paragraph: HTMLElement = document.createElement("P");               // Create a <p> element
-                paragraph.innerText = "Dieses Item befindet sich nicht in deinem Inventar.";               // Insert text
+                let paragraph: HTMLElement = document.createElement("P");
+                paragraph.innerText = "Dieses Item befindet sich nicht in deinem Inventar.";
                 document.body.appendChild(paragraph);
             }
             this.look();
@@ -136,14 +127,61 @@ namespace Abschluss {
 
         public findPositionOfItemToDrop(_itemToCheck: string): number {
             let indexOfObjetInTheInventory: number;
-            
+
             indexOfObjetInTheInventory = this.inventory.indexOf(_itemToCheck);
 
             return indexOfObjetInTheInventory;
         }
 
-        public attack(): void {
-            console.log("Attack!");
+        public attack(_personToAttack: Person): void {
+            let randomNumber: number;
+            randomNumber = Math.floor(Math.random() * 3) + 1;
+
+            if (randomNumber == 1) {
+                this.lostBattle();
+            }
+            else {
+                this.wonBattle(_personToAttack);
+            }
+        }
+
+        public lostBattle(): void {
+            let paragraph: HTMLElement = document.createElement("P");
+            paragraph.innerText = "Du hast das Battle verloren.";
+            document.body.appendChild(paragraph);
+
+            this.lifepoints -= 20;
+
+            if (this.lifepoints > 0) {
+                let paragraph: HTMLElement = document.createElement("P");
+                paragraph.innerText = "Dir bleiben noch " + this.lifepoints + " Lebenspunkte.";
+                document.body.appendChild(paragraph);
+                createBodyElements();
+            } else {
+                let paragraph: HTMLElement = document.createElement("P");
+                paragraph.innerText = "Du bist auf tragische Weise im Battle gestorben. Deine Taten werden zukünftig lediglich in Legenden erzählt.";
+                document.body.appendChild(paragraph);
+            }
+        }
+
+        public wonBattle(_enemy: Person): void {
+            let paragraph: HTMLElement = document.createElement("P");
+            paragraph.innerText = "Du hast das Battle gewonnen.";
+            document.body.appendChild(paragraph);
+
+            _enemy.lifepoints -= 20;
+
+            if (_enemy.lifepoints > 0) {
+                let paragraph: HTMLElement = document.createElement("P");
+                paragraph.innerText = " " + _enemy.name + " verbleiben noch " + _enemy.lifepoints + " Lebenspunkte.";
+                document.body.appendChild(paragraph);
+            } else {
+                let paragraph: HTMLElement = document.createElement("P");
+                paragraph.innerText = "Sieg! " + _enemy.name + " wurde getötet.";
+                document.body.appendChild(paragraph);
+                this.currentRoom.personsInRoom.splice(this.currentRoom.personsInRoom.indexOf(_enemy), 1);
+            }
+            createBodyElements();
         }
 
         public useItem(): void {

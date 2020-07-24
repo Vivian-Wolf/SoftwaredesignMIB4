@@ -13,6 +13,23 @@ namespace Abschluss {
             this.posX = _posX;
             this.posY = _posY;
         }
+
+        toString(): void {
+            let newParagraph: HTMLElement = document.createElement("P");
+            newParagraph.innerHTML = "Du befindest dich im " + this.name + ": " + this.description + " \n \n Du siehst: \n ";
+            if (this.objectsInRoom.length == 0 && this.personsInRoom.length == 0) {
+                newParagraph.innerHTML = "Du befindest dich im " + this.name + ": " + this.description;
+                document.body.appendChild(newParagraph);
+            }
+            for (let i: number = 0; i < this.objectsInRoom.length; i++) {
+                newParagraph.innerText += this.objectsInRoom[i] + " \n ";
+                document.body.appendChild(newParagraph);
+            }
+            for (let i: number = 0; i < this.personsInRoom.length; i++) {
+                newParagraph.innerText += "\n" + this.personsInRoom[i].name + " \n ";
+                document.body.appendChild(newParagraph);
+            }
+        }
     }
 
 }

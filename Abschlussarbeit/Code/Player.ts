@@ -1,17 +1,37 @@
 namespace Abschluss {
     export class Player extends Person {
-        public inventory: String[] = [];
+        public inventory: string[] = [];
+        public level: number = 1;
 
-        constructor(_name: String) {
+        constructor(_name: string) {
             super();
             this.name = _name;
         }
 
-        public speak(): String {
-            return "Hallo";
+        public speak(): void {
+            if (this.currentRoom == mirrorHall) {
+                if (this.level == 0) {
+                    this.level = 1;
+                    story();
+                }
+            }
+            if (this.currentRoom.personsInRoom.length == 1 && this.level != 1) {
+                this.currentRoom.personsInRoom[0].speak();
+            } else if (this.currentRoom.personsInRoom.length == 0) {
+                let paragraph: HTMLElement = document.createElement("P");
+                paragraph.innerText = "Es befindet sich keine Person im Raum.";
+                document.body.appendChild(paragraph);
+                createBodyElements();
+            } //else if (this.currentRoom.personsInRoom.length > 1 && this.level == 2) {
+               // story();
+            //}
+            else if (this.currentRoom.personsInRoom.length > 1 && this.level != 2 && this.level != 1) {
+                this.createBodyElementsForSpeak();
+            }
+
         }
 
-        public changePosition(_userInput: String): void {
+        public changePosition(_userInput: string): void {
             // Backups the current position in case there is no room where the player is moving to
             let playerposXBackup: number = this.posX;
             let playerposYBackup: number = this.posY;
@@ -143,6 +163,13 @@ namespace Abschluss {
             else {
                 this.wonBattle(_personToAttack);
             }
+
+            if (_personToAttack == firstEnemy && this.level == 1) {
+                if (firstEnemy.lifepoints <= 37.5) {
+                    this.level = 2;
+                    story();
+                }
+            }
         }
 
         public lostBattle(): void {
@@ -186,6 +213,17 @@ namespace Abschluss {
 
         public useItem(): void {
             console.log("Item wird benutzt!");
+        }
+
+        public createBodyElementsForSpeak(): void {
+            createBodyElements();
+
+            let inputLabel: HTMLElement = document.getElementById("label");
+            inputLabel.innerText = "Mit wem möchtest du sprechen?:";
+
+            let inputField: HTMLElement = document.getElementById("userInput");
+            inputField.removeAttribute("onchange");
+            inputField.setAttribute("onchange", "Abschluss.checkIfPlayerCanSpeakToPerson(Abschluss.submitCharInput())");
         }
 
     }

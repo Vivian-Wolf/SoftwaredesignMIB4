@@ -24,7 +24,7 @@ var Abschluss;
                 document.body.appendChild(newParagraph);
             }
             for (let i = 0; i < this.personsInRoom.length; i++) {
-                newParagraph.innerText += "\n" + this.personsInRoom[i].name + " \n ";
+                newParagraph.innerText += "\n" + this.personsInRoom[i].name;
                 document.body.appendChild(newParagraph);
             }
         }

@@ -11,7 +11,11 @@ var Abschluss;
             this.canBeAttacked = false;
         }
         speak() {
-            return "Hallo";
+            let paragraph = document.createElement("P");
+            paragraph.setAttribute("id", "speakParagraphNormalPerson");
+            paragraph.innerText = "" + this.name + " sagt: ";
+            document.body.appendChild(paragraph);
+            Abschluss.createBodyElements();
         }
     }
     Abschluss.NormalPerson = NormalPerson;

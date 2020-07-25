@@ -5,10 +5,30 @@ var Abschluss;
         constructor(_name) {
             super();
             this.inventory = [];
+            this.level = 1;
             this.name = _name;
         }
         speak() {
-            return "Hallo";
+            if (this.currentRoom == Abschluss.mirrorHall) {
+                if (this.level == 0) {
+                    this.level = 1;
+                    Abschluss.story();
+                }
+            }
+            if (this.currentRoom.personsInRoom.length == 1 && this.level != 1) {
+                this.currentRoom.personsInRoom[0].speak();
+            }
+            else if (this.currentRoom.personsInRoom.length == 0) {
+                let paragraph = document.createElement("P");
+                paragraph.innerText = "Es befindet sich keine Person im Raum.";
+                document.body.appendChild(paragraph);
+                Abschluss.createBodyElements();
+            } //else if (this.currentRoom.personsInRoom.length > 1 && this.level == 2) {
+            // story();
+            //}
+            else if (this.currentRoom.personsInRoom.length > 1 && this.level != 2 && this.level != 1) {
+                this.createBodyElementsForSpeak();
+            }
         }
         changePosition(_userInput) {
             // Backups the current position in case there is no room where the player is moving to
@@ -127,6 +147,12 @@ var Abschluss;
             else {
                 this.wonBattle(_personToAttack);
             }
+            if (_personToAttack == Abschluss.firstEnemy && this.level == 1) {
+                if (Abschluss.firstEnemy.lifepoints <= 37.5) {
+                    this.level = 2;
+                    Abschluss.story();
+                }
+            }
         }
         lostBattle() {
             let paragraph = document.createElement("P");
@@ -165,6 +191,14 @@ var Abschluss;
         }
         useItem() {
             console.log("Item wird benutzt!");
+        }
+        createBodyElementsForSpeak() {
+            Abschluss.createBodyElements();
+            let inputLabel = document.getElementById("label");
+            inputLabel.innerText = "Mit wem möchtest du sprechen?:";
+            let inputField = document.getElementById("userInput");
+            inputField.removeAttribute("onchange");
+            inputField.setAttribute("onchange", "Abschluss.checkIfPlayerCanSpeakToPerson(Abschluss.submitCharInput())");
         }
     }
     Abschluss.Player = Player;

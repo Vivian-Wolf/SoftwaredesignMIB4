@@ -15,9 +15,8 @@ var Abschluss;
     let castleGarden;
     castleGarden = new Abschluss.Room("Schlossgarten", "außerordentlich schöne Gewächse, vom besten Gärtner der Stadt", 0, 1);
     castleGarden.objectsInRoom.push("eine Blume", "ein Dolch", "Dornen");
-    let mirrorHall;
-    mirrorHall = new Abschluss.Room("Spiegelsaal", "tausend Spiegel, tausend Schönheiten", 1, 0);
-    mirrorHall.objectsInRoom.push("ein Spiegel");
+    Abschluss.mirrorHall = new Abschluss.Room("Spiegelsaal", "tausend Spiegel, tausend Schönheiten", 1, 0);
+    Abschluss.mirrorHall.objectsInRoom.push("ein Spiegel");
     let kingsDressingRoom;
     kingsDressingRoom = new Abschluss.Room("Ankleidezimmer des Königs", "die privaten Gemächer des Königs", 1, 1);
     kingsDressingRoom.objectsInRoom.push("eine Kerze", "ein Schlüssel");
@@ -27,24 +26,30 @@ var Abschluss;
         Abschluss.gameMap.push(castleGarden);
         Abschluss.gameMap.push(secretPassage);
         Abschluss.gameMap.push(bastille);
-        Abschluss.gameMap.push(mirrorHall);
+        Abschluss.gameMap.push(Abschluss.mirrorHall);
         Abschluss.gameMap.push(kingsDressingRoom);
     }
-    let player = new Abschluss.Player("Lord Mercier");
-    player.currentRoom = castleEntry;
-    player.lifepoints = 100;
-    let prisoners = new Abschluss.Enemy("Gefangene", bastille, 40);
-    bastille.personsInRoom.push(prisoners);
-    let guardGarden = new Abschluss.Enemy("Garde", castleGarden, 60);
-    castleGarden.personsInRoom.push(guardGarden);
-    let guardEntry = new Abschluss.Enemy("Garde", castleEntry, 100);
-    castleEntry.personsInRoom.push(guardEntry);
-    let king = new Abschluss.NormalPerson("König", mirrorHall, 200);
-    mirrorHall.personsInRoom.push(king);
+    Abschluss.player = new Abschluss.Player("Lord Mercier");
+    Abschluss.player.currentRoom = castleEntry;
+    Abschluss.player.lifepoints = 100;
+    Abschluss.prisoners = new Abschluss.Enemy("Gefangene", bastille, 40);
+    bastille.personsInRoom.push(Abschluss.prisoners);
+    Abschluss.firstEnemy = new Abschluss.Enemy("Marie Lorean", bastille, 55);
+    bastille.personsInRoom.push(Abschluss.firstEnemy);
+    Abschluss.guardGarden = new Abschluss.Enemy("Garde", castleGarden, 60);
+    castleGarden.personsInRoom.push(Abschluss.guardGarden);
+    Abschluss.guardEntry = new Abschluss.Enemy("Garde", castleEntry, 100);
+    castleEntry.personsInRoom.push(Abschluss.guardEntry);
+    Abschluss.king = new Abschluss.NormalPerson("König", Abschluss.mirrorHall, 200);
+    Abschluss.mirrorHall.personsInRoom.push(Abschluss.king);
+    //export let testPerson: NormalPerson = new NormalPerson("TestPerson", mirrorHall, 200);
+    //mirrorHall.personsInRoom.push(testPerson);
+    Abschluss.detective = new Abschluss.NormalPerson("Dedektiv des Königs", Abschluss.mirrorHall, 200);
+    secretPassage.personsInRoom.push(Abschluss.detective);
     let mistress = new Abschluss.NormalPerson("Geliebte des Königs", kingsDressingRoom, 50);
     kingsDressingRoom.personsInRoom.push(mistress);
     let para = document.createElement("P");
-    para.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";
+    para.innerText = "Herzlich Willkommen in Versailles " + Abschluss.player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";
     document.body.appendChild(para);
     let form = document.createElement("form");
     form.setAttribute("id", "form");
@@ -82,7 +87,7 @@ var Abschluss;
                 break;
             }
             case "l": {
-                player.look();
+                Abschluss.player.look();
                 createBodyElements();
                 break;
             }
@@ -99,46 +104,45 @@ var Abschluss;
                 break;
             }
             case "u": {
-                player.useItem();
+                Abschluss.player.useItem();
                 createBodyElements();
                 break;
             }
             case "i": {
-                player.showInventory();
+                Abschluss.player.showInventory();
                 createBodyElements();
                 break;
             }
             case "a": {
-                player.changePosition(submitCharInput());
+                Abschluss.player.changePosition(submitCharInput());
                 createBodyElements();
                 break;
             }
             case "w": {
-                player.changePosition(submitCharInput());
+                Abschluss.player.changePosition(submitCharInput());
                 createBodyElements();
                 break;
             }
             case "d": {
-                player.changePosition(submitCharInput());
+                Abschluss.player.changePosition(submitCharInput());
                 createBodyElements();
                 break;
             }
             case "s": {
-                player.changePosition(submitCharInput());
+                Abschluss.player.changePosition(submitCharInput());
                 createBodyElements();
                 break;
             }
             case "e": {
-                player.speak();
-                createBodyElements();
+                Abschluss.player.speak();
                 break;
             }
             case "p": {
                 break;
             }
             default: {
-                let paragraph = document.createElement("P"); // Create a <p> element
-                paragraph.innerText = "Diese Aktion steht nicht zur Verfügung."; // Insert text
+                let paragraph = document.createElement("P");
+                paragraph.innerText = "Diese Aktion steht nicht zur Verfügung.";
                 document.body.appendChild(paragraph);
                 createBodyElements();
                 break;
@@ -147,8 +151,8 @@ var Abschluss;
     }
     Abschluss.processUserInput = processUserInput;
     function showCommands() {
-        let paragraph = document.createElement("P"); // Create a <p> element
-        paragraph.innerText = "Folgende Kommandos stehen zur Verfügung: \n kommandos (c), umschauen (l), nach Norden (w) / Süden (s) / Osten (d) / Westen (a) gehen, Inventar anzeigen (i), Item aufnehmen (t), Item zurücklegen (d), Item benutzen (u), attack (a), mit Person sprechen (e),  Spiel beenden (q)"; // Insert text
+        let paragraph = document.createElement("P");
+        paragraph.innerText = "Folgende Kommandos stehen zur Verfügung: \n kommandos (c), umschauen (l), nach Norden (w) / Süden (s) / Osten (d) / Westen (a) gehen, Inventar anzeigen (i), Item aufnehmen (t), Item zurücklegen (d), Item benutzen (u), attack (a), mit Person sprechen (e),  Spiel beenden (q)";
         document.body.appendChild(paragraph);
     }
     function createBodyElementsForItemPicker() {
@@ -160,7 +164,7 @@ var Abschluss;
         inputField.setAttribute("onchange", "Abschluss.takeItemFromRoom(Abschluss.submitCharInput())");
     }
     function takeItemFromRoom(_itemToPick) {
-        player.takeItem(_itemToPick);
+        Abschluss.player.takeItem(_itemToPick);
     }
     Abschluss.takeItemFromRoom = takeItemFromRoom;
     function createBodyElementsForItemDrop() {
@@ -171,7 +175,7 @@ var Abschluss;
         inputField.setAttribute("onchange", "Abschluss.dropItemFromInventory(Abschluss.submitCharInput())");
     }
     function dropItemFromInventory(_itemToPick) {
-        player.dropItem(_itemToPick);
+        Abschluss.player.dropItem(_itemToPick);
     }
     Abschluss.dropItemFromInventory = dropItemFromInventory;
     function createInputFieldWithLabel() {
@@ -199,18 +203,18 @@ var Abschluss;
     function checkIfPersonCanBeAttacked(_personToAttack) {
         let personIsPartOfRoom = findPersonInRoom(_personToAttack);
         if (personIsPartOfRoom == -1) {
-            let paragraph = document.createElement("P"); // Create a <p> element
-            paragraph.innerText = "Die Person, die du attackieren möchtest befindet sich nicht im Raum."; // Insert text
+            let paragraph = document.createElement("P");
+            paragraph.innerText = "Die Person, die du attackieren möchtest befindet sich nicht im Raum.";
             document.body.appendChild(paragraph);
             createBodyElements();
         }
         else {
-            if (player.currentRoom.personsInRoom[personIsPartOfRoom].canBeAttacked == true) {
-                player.attack(player.currentRoom.personsInRoom[personIsPartOfRoom]);
+            if (Abschluss.player.currentRoom.personsInRoom[personIsPartOfRoom].canBeAttacked == true) {
+                Abschluss.player.attack(Abschluss.player.currentRoom.personsInRoom[personIsPartOfRoom]);
             }
             else {
-                let paragraph = document.createElement("P"); // Create a <p> element
-                paragraph.innerText = "Die Person, die du attackieren möchtest ist nicht dein Feind. Du kannst diese Person nicht attackieren."; // Insert text
+                let paragraph = document.createElement("P");
+                paragraph.innerText = "Die Person, die du attackieren möchtest ist nicht dein Feind. Du kannst diese Person nicht attackieren.";
                 document.body.appendChild(paragraph);
                 createBodyElements();
             }
@@ -219,15 +223,26 @@ var Abschluss;
     Abschluss.checkIfPersonCanBeAttacked = checkIfPersonCanBeAttacked;
     function findPersonInRoom(_personToFind) {
         let indexOfFoundPerson = -1;
-        let personIsInRoom = false;
-        let personsToCheck = player.currentRoom.personsInRoom;
-        for (let i = 0; i < player.currentRoom.personsInRoom.length; i++) {
+        let personsToCheck = Abschluss.player.currentRoom.personsInRoom;
+        for (let i = 0; i < Abschluss.player.currentRoom.personsInRoom.length; i++) {
             if (personsToCheck[i].name == _personToFind) {
-                personIsInRoom = true;
                 indexOfFoundPerson = i;
             }
         }
         return indexOfFoundPerson;
     }
+    function checkIfPlayerCanSpeakToPerson(_personToSpeakWith) {
+        let personIsPartOfRoom = findPersonInRoom(_personToSpeakWith);
+        if (personIsPartOfRoom == -1) {
+            let paragraph = document.createElement("P");
+            paragraph.innerText = "Die Person, mit der du sprechen möchtest befindet sich nicht im Raum.";
+            document.body.appendChild(paragraph);
+            createBodyElements();
+        }
+        else {
+            Abschluss.player.currentRoom.personsInRoom[personIsPartOfRoom].speak();
+        }
+    }
+    Abschluss.checkIfPlayerCanSpeakToPerson = checkIfPlayerCanSpeakToPerson;
 })(Abschluss || (Abschluss = {}));
 //# sourceMappingURL=main.js.map

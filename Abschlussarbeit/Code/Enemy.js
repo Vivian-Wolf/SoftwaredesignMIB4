@@ -12,7 +12,10 @@ var Abschluss;
             this.canBeAttacked = true;
         }
         speak() {
-            return "Hallo";
+            let paragraph = document.createElement("P");
+            paragraph.setAttribute("id", "speakParagraphEnemy");
+            paragraph.innerText = "" + this.name + " sagt: ";
+            document.body.appendChild(paragraph);
         }
     }
     Abschluss.Enemy = Enemy;

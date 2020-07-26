@@ -8,11 +8,11 @@ namespace Abschluss {
     castleEntry = new Room("Eingang des Schlosses", "pächtiger, überwältigender Eingang", 0, 0);
     castleEntry.objectsInRoom.push("eine Perücke", "ein paar Pferdezügel", "ein Armulet");
 
-    let secretPassage: Room;
+    export let secretPassage: Room;
     secretPassage = new Room("Geheimgang", "düsterer, schmaler Gang", -1, 0);
     secretPassage.objectsInRoom.push("eine Zange", "ein Kettenhemd");
 
-    let bastille: Room;
+    export let bastille: Room;
     bastille = new Room("Bastille", "hohe Gefängnismauern, in ihnen die berüchtigsten Mörder der Stadt", -1, 1);
     bastille.objectsInRoom.push("Knochen", "Fesseln", "einen Finger");
 
@@ -46,7 +46,7 @@ namespace Abschluss {
     export let prisoners: Enemy = new Enemy("Gefangene", bastille, 40);
     bastille.personsInRoom.push(prisoners);
 
-    export let firstEnemy: Enemy = new Enemy("Marie Lorean", bastille, 55);
+    export let firstEnemy: Person = new Enemy("Marie Lorean", bastille, 75);
     bastille.personsInRoom.push(firstEnemy);
 
     export let guardGarden: Enemy = new Enemy("Garde", castleGarden, 60);
@@ -55,7 +55,7 @@ namespace Abschluss {
     export let guardEntry: Enemy = new Enemy("Garde", castleEntry, 100);
     castleEntry.personsInRoom.push(guardEntry);
 
-    export let king: NormalPerson = new NormalPerson("König", mirrorHall, 200);
+    export let king: NormalPerson = new NormalPerson("König", mirrorHall, 10);
     mirrorHall.personsInRoom.push(king);
 
     //export let testPerson: NormalPerson = new NormalPerson("TestPerson", mirrorHall, 200);
@@ -71,7 +71,7 @@ namespace Abschluss {
     para.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";
     document.body.appendChild(para);
 
-    let form: HTMLElement = document.createElement("form");
+    export let form: HTMLElement = document.createElement("form");
     form.setAttribute("id", "form");
 
     let elementsCreated: number = 0;
@@ -259,7 +259,7 @@ namespace Abschluss {
         }
     }
 
-    function findPersonInRoom(_personToFind: string): number {
+    export function findPersonInRoom(_personToFind: string): number {
         let indexOfFoundPerson: number = -1;
         let personsToCheck: Person[] = player.currentRoom.personsInRoom;
 

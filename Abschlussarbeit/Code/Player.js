@@ -4,18 +4,19 @@ var Abschluss;
     class Player extends Abschluss.Person {
         constructor(_name) {
             super();
-            this.inventory = [];
-            this.level = 1;
+            this.inventory = ["ein Schlüssel"];
+            this.level = 3;
             this.name = _name;
         }
         speak() {
-            if (this.currentRoom == Abschluss.mirrorHall) {
-                if (this.level == 0) {
-                    this.level = 1;
-                    Abschluss.story();
-                }
+            if (this.currentRoom == Abschluss.mirrorHall && this.level == 0) {
+                this.level = 1;
+                Abschluss.story();
             }
-            if (this.currentRoom.personsInRoom.length == 1 && this.level != 1) {
+            if (this.currentRoom == Abschluss.secretPassage && this.level == 3) {
+                Abschluss.story();
+            }
+            if (this.currentRoom.personsInRoom.length == 1 && this.level != 1 && this.level != 3) {
                 this.currentRoom.personsInRoom[0].speak();
             }
             else if (this.currentRoom.personsInRoom.length == 0) {
@@ -23,10 +24,8 @@ var Abschluss;
                 paragraph.innerText = "Es befindet sich keine Person im Raum.";
                 document.body.appendChild(paragraph);
                 Abschluss.createBodyElements();
-            } //else if (this.currentRoom.personsInRoom.length > 1 && this.level == 2) {
-            // story();
-            //}
-            else if (this.currentRoom.personsInRoom.length > 1 && this.level != 2 && this.level != 1) {
+            }
+            else if (this.currentRoom.personsInRoom.length > 1 && this.level != 2 && this.level != 1 && this.level != 3) {
                 this.createBodyElementsForSpeak();
             }
         }
@@ -61,11 +60,23 @@ var Abschluss;
                 this.posY = playerposYBackup;
                 console.log("Position reset to " + this.posX + " " + this.posY);
             }
-            else {
-                console.log("New position: " + this.posX + " " + this.posY);
+            if (this.posX == Abschluss.secretPassage.posX && this.posY == Abschluss.secretPassage.posY) {
+                if (this.inventory.indexOf("ein Schlüssel") == -1) {
+                    this.posX = playerposXBackup;
+                    this.posY = playerposYBackup;
+                    let paragraphResetPosition = document.createElement("p");
+                    paragraphResetPosition.innerText = "Der Geheimgang kann nur mit einem Schlüssel begangen werden.";
+                    document.body.appendChild(paragraphResetPosition);
+                }
             }
             this.currentRoom = Abschluss.gameMap.find(i => i.posX === this.posX && i.posY === this.posY);
             this.look();
+            if (this.currentRoom.personsInRoom.indexOf(Abschluss.guardEntry) >= 0 && this.level == 4) {
+                Abschluss.guardEntry.attack();
+            }
+            if (this.currentRoom.personsInRoom.indexOf(Abschluss.guardGarden) >= 0 && this.level == 4) {
+                Abschluss.guardGarden.attack();
+            }
         }
         findRoom() {
             let roomNotThere = false;
@@ -180,14 +191,19 @@ var Abschluss;
                 let paragraph = document.createElement("P");
                 paragraph.innerText = " " + _enemy.name + " verbleiben noch " + _enemy.lifepoints + " Lebenspunkte.";
                 document.body.appendChild(paragraph);
+                Abschluss.createBodyElements();
             }
-            else {
+            else if (_enemy.lifepoints <= 0 && _enemy != Abschluss.king) {
                 let paragraph = document.createElement("P");
                 paragraph.innerText = "Sieg! " + _enemy.name + " wurde getötet.";
                 document.body.appendChild(paragraph);
                 this.currentRoom.personsInRoom.splice(this.currentRoom.personsInRoom.indexOf(_enemy), 1);
+                Abschluss.createBodyElements();
             }
-            Abschluss.createBodyElements();
+            else {
+                this.level = 5;
+                Abschluss.story();
+            }
         }
         useItem() {
             console.log("Item wird benutzt!");

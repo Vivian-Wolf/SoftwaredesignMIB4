@@ -6,12 +6,10 @@ var Abschluss;
     let castleEntry;
     castleEntry = new Abschluss.Room("Eingang des Schlosses", "pächtiger, überwältigender Eingang", 0, 0);
     castleEntry.objectsInRoom.push("eine Perücke", "ein paar Pferdezügel", "ein Armulet");
-    let secretPassage;
-    secretPassage = new Abschluss.Room("Geheimgang", "düsterer, schmaler Gang", -1, 0);
-    secretPassage.objectsInRoom.push("eine Zange", "ein Kettenhemd");
-    let bastille;
-    bastille = new Abschluss.Room("Bastille", "hohe Gefängnismauern, in ihnen die berüchtigsten Mörder der Stadt", -1, 1);
-    bastille.objectsInRoom.push("Knochen", "Fesseln", "einen Finger");
+    Abschluss.secretPassage = new Abschluss.Room("Geheimgang", "düsterer, schmaler Gang", -1, 0);
+    Abschluss.secretPassage.objectsInRoom.push("eine Zange", "ein Kettenhemd");
+    Abschluss.bastille = new Abschluss.Room("Bastille", "hohe Gefängnismauern, in ihnen die berüchtigsten Mörder der Stadt", -1, 1);
+    Abschluss.bastille.objectsInRoom.push("Knochen", "Fesseln", "einen Finger");
     let castleGarden;
     castleGarden = new Abschluss.Room("Schlossgarten", "außerordentlich schöne Gewächse, vom besten Gärtner der Stadt", 0, 1);
     castleGarden.objectsInRoom.push("eine Blume", "ein Dolch", "Dornen");
@@ -24,35 +22,35 @@ var Abschluss;
     function pushMaps() {
         Abschluss.gameMap.push(castleEntry);
         Abschluss.gameMap.push(castleGarden);
-        Abschluss.gameMap.push(secretPassage);
-        Abschluss.gameMap.push(bastille);
+        Abschluss.gameMap.push(Abschluss.secretPassage);
+        Abschluss.gameMap.push(Abschluss.bastille);
         Abschluss.gameMap.push(Abschluss.mirrorHall);
         Abschluss.gameMap.push(kingsDressingRoom);
     }
     Abschluss.player = new Abschluss.Player("Lord Mercier");
     Abschluss.player.currentRoom = castleEntry;
     Abschluss.player.lifepoints = 100;
-    Abschluss.prisoners = new Abschluss.Enemy("Gefangene", bastille, 40);
-    bastille.personsInRoom.push(Abschluss.prisoners);
-    Abschluss.firstEnemy = new Abschluss.Enemy("Marie Lorean", bastille, 55);
-    bastille.personsInRoom.push(Abschluss.firstEnemy);
+    Abschluss.prisoners = new Abschluss.Enemy("Gefangene", Abschluss.bastille, 40);
+    Abschluss.bastille.personsInRoom.push(Abschluss.prisoners);
+    Abschluss.firstEnemy = new Abschluss.Enemy("Marie Lorean", Abschluss.bastille, 75);
+    Abschluss.bastille.personsInRoom.push(Abschluss.firstEnemy);
     Abschluss.guardGarden = new Abschluss.Enemy("Garde", castleGarden, 60);
     castleGarden.personsInRoom.push(Abschluss.guardGarden);
     Abschluss.guardEntry = new Abschluss.Enemy("Garde", castleEntry, 100);
     castleEntry.personsInRoom.push(Abschluss.guardEntry);
-    Abschluss.king = new Abschluss.NormalPerson("König", Abschluss.mirrorHall, 200);
+    Abschluss.king = new Abschluss.NormalPerson("König", Abschluss.mirrorHall, 10);
     Abschluss.mirrorHall.personsInRoom.push(Abschluss.king);
     //export let testPerson: NormalPerson = new NormalPerson("TestPerson", mirrorHall, 200);
     //mirrorHall.personsInRoom.push(testPerson);
     Abschluss.detective = new Abschluss.NormalPerson("Dedektiv des Königs", Abschluss.mirrorHall, 200);
-    secretPassage.personsInRoom.push(Abschluss.detective);
+    Abschluss.secretPassage.personsInRoom.push(Abschluss.detective);
     let mistress = new Abschluss.NormalPerson("Geliebte des Königs", kingsDressingRoom, 50);
     kingsDressingRoom.personsInRoom.push(mistress);
     let para = document.createElement("P");
     para.innerText = "Herzlich Willkommen in Versailles " + Abschluss.player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";
     document.body.appendChild(para);
-    let form = document.createElement("form");
-    form.setAttribute("id", "form");
+    Abschluss.form = document.createElement("form");
+    Abschluss.form.setAttribute("id", "form");
     let elementsCreated = 0;
     createBodyElements();
     function createBodyElements() {
@@ -67,9 +65,9 @@ var Abschluss;
             else {
                 let userInput = document.getElementById("userInput");
                 let inputLabel = document.getElementById("label");
-                form.removeChild(inputLabel);
-                form.removeChild(userInput);
-                document.body.removeChild(form);
+                Abschluss.form.removeChild(inputLabel);
+                Abschluss.form.removeChild(userInput);
+                document.body.removeChild(Abschluss.form);
                 elementsCreated = 0;
             }
     }
@@ -188,9 +186,9 @@ var Abschluss;
         inputLabel.innerText = "Was möchtest du tun?:";
         inputLabel.setAttribute("id", "label");
         inputLabel.setAttribute("for", "userInput");
-        form.appendChild(inputLabel);
-        form.appendChild(userInput);
-        document.body.appendChild(form);
+        Abschluss.form.appendChild(inputLabel);
+        Abschluss.form.appendChild(userInput);
+        document.body.appendChild(Abschluss.form);
     }
     function createBodyElementsForAttack() {
         createBodyElements();
@@ -231,6 +229,7 @@ var Abschluss;
         }
         return indexOfFoundPerson;
     }
+    Abschluss.findPersonInRoom = findPersonInRoom;
     function checkIfPlayerCanSpeakToPerson(_personToSpeakWith) {
         let personIsPartOfRoom = findPersonInRoom(_personToSpeakWith);
         if (personIsPartOfRoom == -1) {

@@ -1,7 +1,7 @@
 namespace Abschluss {
     export class Player extends Person {
-        public inventory: string[] = [];
-        public level: number = 1;
+        public inventory: string[] = ["ein Schlüssel"];
+        public level: number = 3;
 
         constructor(_name: string) {
             super();
@@ -9,23 +9,23 @@ namespace Abschluss {
         }
 
         public speak(): void {
-            if (this.currentRoom == mirrorHall) {
-                if (this.level == 0) {
-                    this.level = 1;
-                    story();
-                }
+            if (this.currentRoom == mirrorHall && this.level == 0) {
+                this.level = 1;
+                story();
+
             }
-            if (this.currentRoom.personsInRoom.length == 1 && this.level != 1) {
+            if (this.currentRoom == secretPassage && this.level == 3) {
+                story();
+            }
+            if (this.currentRoom.personsInRoom.length == 1 && this.level != 1 && this.level != 3) {
                 this.currentRoom.personsInRoom[0].speak();
             } else if (this.currentRoom.personsInRoom.length == 0) {
                 let paragraph: HTMLElement = document.createElement("P");
                 paragraph.innerText = "Es befindet sich keine Person im Raum.";
                 document.body.appendChild(paragraph);
                 createBodyElements();
-            } //else if (this.currentRoom.personsInRoom.length > 1 && this.level == 2) {
-               // story();
-            //}
-            else if (this.currentRoom.personsInRoom.length > 1 && this.level != 2 && this.level != 1) {
+            }
+            else if (this.currentRoom.personsInRoom.length > 1 && this.level != 2 && this.level != 1 && this.level != 3) {
                 this.createBodyElementsForSpeak();
             }
 
@@ -62,11 +62,23 @@ namespace Abschluss {
                 this.posY = playerposYBackup;
                 console.log("Position reset to " + this.posX + " " + this.posY);
             }
-            else {
-                console.log("New position: " + this.posX + " " + this.posY);
+            if (this.posX == secretPassage.posX && this.posY == secretPassage.posY) {
+                if (this.inventory.indexOf("ein Schlüssel") == -1) {
+                    this.posX = playerposXBackup;
+                    this.posY = playerposYBackup;
+                    let paragraphResetPosition: HTMLElement = document.createElement("p");
+                    paragraphResetPosition.innerText = "Der Geheimgang kann nur mit einem Schlüssel begangen werden.";
+                    document.body.appendChild(paragraphResetPosition);
+                }
             }
             this.currentRoom = gameMap.find(i => i.posX === this.posX && i.posY === this.posY);
             this.look();
+            if (this.currentRoom.personsInRoom.indexOf(guardEntry) >= 0 && this.level == 4) {
+                guardEntry.attack();
+            }
+            if (this.currentRoom.personsInRoom.indexOf(guardGarden) >= 0 && this.level == 4) {
+                guardGarden.attack();
+            }
         }
 
         public findRoom(): boolean {
@@ -202,13 +214,17 @@ namespace Abschluss {
                 let paragraph: HTMLElement = document.createElement("P");
                 paragraph.innerText = " " + _enemy.name + " verbleiben noch " + _enemy.lifepoints + " Lebenspunkte.";
                 document.body.appendChild(paragraph);
-            } else {
+                createBodyElements();
+            } else if (_enemy.lifepoints <= 0 && _enemy != king) {
                 let paragraph: HTMLElement = document.createElement("P");
                 paragraph.innerText = "Sieg! " + _enemy.name + " wurde getötet.";
                 document.body.appendChild(paragraph);
                 this.currentRoom.personsInRoom.splice(this.currentRoom.personsInRoom.indexOf(_enemy), 1);
+                createBodyElements();
+            } else {
+                this.level = 5;
+                story();
             }
-            createBodyElements();
         }
 
         public useItem(): void {

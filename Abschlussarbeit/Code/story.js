@@ -15,10 +15,33 @@ var Abschluss;
                 speechSecondLevel.innerText += ` Bitte! Verschone mich. Ich bin unschuldig. Ich kann es beweisen. \n${Abschluss.player.name} sagt: Sprich. \n ${Abschluss.firstEnemy.name} sagt: Ich wurde getäuscht. Das Gift wurde in meinen Mantel gesteckt, um die Revolution zu schwächen. \n ${Abschluss.player.name} sagt: Wie willst du das beweisen? \n ${Abschluss.firstEnemy.name} sagt: Suche den Detektiv auf. Er wird dir Beweise liefern.`;
                 Abschluss.createBodyElements();
                 Abschluss.player.level = 3;
+                Abschluss.bastille.personsInRoom.splice(Abschluss.findPersonInRoom(Abschluss.firstEnemy.name), 1);
+                Abschluss.firstEnemy = new Abschluss.NormalPerson(Abschluss.firstEnemy.name, Abschluss.firstEnemy.currentRoom, Abschluss.firstEnemy.lifepoints);
+                Abschluss.bastille.personsInRoom.push(Abschluss.firstEnemy);
                 break;
             }
-            //   case 3: {
-            //   }
+            case 3: {
+                let speechDetective = document.createElement("p");
+                speechDetective.innerText = `${Abschluss.firstEnemy.name} sagt: Das Land ist verloren. Der König, er hat die Bürger des Landes gegen sich gerichtet. Marie Lorean wollte ihn nicht töten. Er wollte die Revolution stoppen, nachdem sich auch die niedrigen Adelleute gegen ihn gewandt haben. Diese Schlacht ist verloren. Der einzige Weg den König jetzt noch zu retten, ist ihn selbst dem heiligen Vater zu überlassen.`;
+                document.body.appendChild(speechDetective);
+                Abschluss.createBodyElements();
+                Abschluss.mirrorHall.personsInRoom.splice(Abschluss.findPersonInRoom(Abschluss.king.name), 1);
+                Abschluss.king = new Abschluss.Enemy(Abschluss.king.name, Abschluss.king.currentRoom, Abschluss.king.lifepoints);
+                Abschluss.mirrorHall.personsInRoom.push(Abschluss.king);
+                Abschluss.player.level = 4;
+                break;
+            }
+            case 5: {
+                let paragraph = document.createElement("P");
+                paragraph.innerText = "Die Revolution nimmt ihren Gang. Ein neuer Staat wurde geboren.";
+                document.body.appendChild(paragraph);
+                let userInput = document.getElementById("userInput");
+                let inputLabel = document.getElementById("label");
+                Abschluss.form.removeChild(inputLabel);
+                Abschluss.form.removeChild(userInput);
+                document.body.removeChild(Abschluss.form);
+                break;
+            }
         }
     }
     Abschluss.story = story;

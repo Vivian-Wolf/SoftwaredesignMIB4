@@ -239,7 +239,7 @@ namespace Abschluss {
 
         if (personIsPartOfRoom == -1) {
             let paragraph: HTMLElement = document.createElement("P");
-            paragraph.innerText = "Die Person, die du attackieren möchtest befindet sich nicht im Raum.";
+            paragraph.innerText = "Die Person, die du attackieren möchtest, befindet sich nicht im Raum.";
             document.body.appendChild(paragraph);
             createBodyElements();
         } else {
@@ -247,7 +247,7 @@ namespace Abschluss {
                 player.attack(player.currentRoom.personsInRoom[personIsPartOfRoom]);
             } else {
                 let paragraph: HTMLElement = document.createElement("P");
-                paragraph.innerText = "Die Person, die du attackieren möchtest ist nicht dein Feind. Du kannst diese Person nicht attackieren.";
+                paragraph.innerText = "Die Person, die du attackieren möchtest, ist nicht dein Feind. Du kannst diese Person nicht attackieren.";
                 document.body.appendChild(paragraph);
                 createBodyElements();
             }

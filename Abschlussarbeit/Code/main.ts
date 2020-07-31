@@ -97,6 +97,23 @@ namespace Abschluss {
             }
     }
 
+    function createInputFieldWithLabel(): void {
+        let userInput: HTMLElement = document.createElement("input");
+        userInput.setAttribute("name", "userInput");
+        userInput.setAttribute("type", "text");
+        userInput.setAttribute("id", "userInput");
+        userInput.setAttribute("onchange", "Abschluss.processUserInput(Abschluss.submitCharInput())");
+
+        let inputLabel: HTMLElement = document.createElement("label");
+        inputLabel.innerText = "Was möchtest du tun?:";
+        inputLabel.setAttribute("id", "label");
+        inputLabel.setAttribute("for", "userInput");
+
+        form.appendChild(inputLabel);
+        form.appendChild(userInput);
+        document.body.appendChild(form);
+    }
+
     export function submitCharInput(): string {
         let textInput: string = (<HTMLInputElement>document.getElementById("userInput")).value;
         return textInput;
@@ -202,23 +219,6 @@ namespace Abschluss {
 
     export function dropItemFromInventory(_itemToDrop: string): void {
         player.dropItem(_itemToDrop);
-    }
-
-    function createInputFieldWithLabel(): void {
-        let userInput: HTMLElement = document.createElement("input");
-        userInput.setAttribute("name", "userInput");
-        userInput.setAttribute("type", "text");
-        userInput.setAttribute("id", "userInput");
-        userInput.setAttribute("onchange", "Abschluss.processUserInput(Abschluss.submitCharInput())");
-
-        let inputLabel: HTMLElement = document.createElement("label");
-        inputLabel.innerText = "Was möchtest du tun?:";
-        inputLabel.setAttribute("id", "label");
-        inputLabel.setAttribute("for", "userInput");
-
-        form.appendChild(inputLabel);
-        form.appendChild(userInput);
-        document.body.appendChild(form);
     }
 
     function createBodyElementsForAttack(): void {

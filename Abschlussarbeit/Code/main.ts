@@ -28,17 +28,6 @@ namespace Abschluss {
     kingsDressingRoom = new Room("Ankleidezimmer des Königs", "die privaten Gemächer des Königs", 1, 1);
     kingsDressingRoom.objectsInRoom.push("eine Kerze", "ein Schlüssel");
 
-    pushMaps();
-
-    function pushMaps(): void {
-        gameMap.push(castleEntry);
-        gameMap.push(castleGarden);
-        gameMap.push(secretPassage);
-        gameMap.push(bastille);
-        gameMap.push(mirrorHall);
-        gameMap.push(kingsDressingRoom);
-    }
-
     export let player: Player = new Player("Lord Mercier");
     player.currentRoom = castleEntry;
     player.lifepoints = 100;
@@ -53,6 +42,17 @@ namespace Abschluss {
     //export let testPerson: NormalPerson = new NormalPerson("TestPerson", mirrorHall, 200);
     //mirrorHall.personsInRoom.push(testPerson);
     
+    pushMaps();
+
+    function pushMaps(): void {
+        gameMap.push(castleEntry);
+        gameMap.push(castleGarden);
+        gameMap.push(secretPassage);
+        gameMap.push(bastille);
+        gameMap.push(mirrorHall);
+        gameMap.push(kingsDressingRoom);
+    }
+    
     pushPersons();
 
     function pushPersons(): void {
@@ -64,9 +64,9 @@ namespace Abschluss {
         secretPassage.personsInRoom.push(detective);
     }
 
-    let para: HTMLElement = document.createElement("P");
-    para.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";
-    document.body.appendChild(para);
+    let paragraph: HTMLElement = document.createElement("P");
+    paragraph.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";
+    document.body.appendChild(paragraph);
 
     export let form: HTMLElement = document.createElement("form");
     form.setAttribute("id", "form");
@@ -155,6 +155,7 @@ namespace Abschluss {
                 break;
             }
             case "p": {
+                document.body.removeChild(form);
                 break;
             }
             default: {

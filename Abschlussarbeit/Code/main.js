@@ -18,6 +18,18 @@ var Abschluss;
     let kingsDressingRoom;
     kingsDressingRoom = new Abschluss.Room("Ankleidezimmer des Königs", "die privaten Gemächer des Königs", 1, 1);
     kingsDressingRoom.objectsInRoom.push("eine Kerze", "ein Schlüssel");
+    Abschluss.player = new Abschluss.Player("Lord Mercier");
+    Abschluss.player.currentRoom = castleEntry;
+    Abschluss.player.lifepoints = 100;
+    Abschluss.prisoners = new Abschluss.Enemy("Gefangene", Abschluss.bastille, 40);
+    Abschluss.firstEnemy = new Abschluss.Enemy("Marie Lorean", Abschluss.bastille, 75);
+    Abschluss.guardGarden = new Abschluss.Enemy("Garde", castleGarden, 60);
+    Abschluss.guardEntry = new Abschluss.Enemy("Garde", castleEntry, 100);
+    Abschluss.king = new Abschluss.NormalPerson("König", Abschluss.mirrorHall, 10);
+    Abschluss.detective = new Abschluss.NormalPerson("Dedektiv des Königs", Abschluss.mirrorHall, 200);
+    let mistress = new Abschluss.NormalPerson("Geliebte des Königs", kingsDressingRoom, 50);
+    //export let testPerson: NormalPerson = new NormalPerson("TestPerson", mirrorHall, 200);
+    //mirrorHall.personsInRoom.push(testPerson);
     pushMaps();
     function pushMaps() {
         Abschluss.gameMap.push(castleEntry);
@@ -27,28 +39,18 @@ var Abschluss;
         Abschluss.gameMap.push(Abschluss.mirrorHall);
         Abschluss.gameMap.push(kingsDressingRoom);
     }
-    Abschluss.player = new Abschluss.Player("Lord Mercier");
-    Abschluss.player.currentRoom = castleEntry;
-    Abschluss.player.lifepoints = 100;
-    Abschluss.prisoners = new Abschluss.Enemy("Gefangene", Abschluss.bastille, 40);
-    Abschluss.bastille.personsInRoom.push(Abschluss.prisoners);
-    Abschluss.firstEnemy = new Abschluss.Enemy("Marie Lorean", Abschluss.bastille, 75);
-    Abschluss.bastille.personsInRoom.push(Abschluss.firstEnemy);
-    Abschluss.guardGarden = new Abschluss.Enemy("Garde", castleGarden, 60);
-    castleGarden.personsInRoom.push(Abschluss.guardGarden);
-    Abschluss.guardEntry = new Abschluss.Enemy("Garde", castleEntry, 100);
-    castleEntry.personsInRoom.push(Abschluss.guardEntry);
-    Abschluss.king = new Abschluss.NormalPerson("König", Abschluss.mirrorHall, 10);
-    Abschluss.mirrorHall.personsInRoom.push(Abschluss.king);
-    //export let testPerson: NormalPerson = new NormalPerson("TestPerson", mirrorHall, 200);
-    //mirrorHall.personsInRoom.push(testPerson);
-    Abschluss.detective = new Abschluss.NormalPerson("Dedektiv des Königs", Abschluss.mirrorHall, 200);
-    Abschluss.secretPassage.personsInRoom.push(Abschluss.detective);
-    let mistress = new Abschluss.NormalPerson("Geliebte des Königs", kingsDressingRoom, 50);
-    kingsDressingRoom.personsInRoom.push(mistress);
-    let para = document.createElement("P");
-    para.innerText = "Herzlich Willkommen in Versailles " + Abschluss.player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";
-    document.body.appendChild(para);
+    pushPersons();
+    function pushPersons() {
+        Abschluss.bastille.personsInRoom.push(Abschluss.prisoners);
+        castleGarden.personsInRoom.push(Abschluss.guardGarden);
+        castleEntry.personsInRoom.push(Abschluss.guardEntry);
+        Abschluss.mirrorHall.personsInRoom.push(Abschluss.king);
+        kingsDressingRoom.personsInRoom.push(mistress);
+        Abschluss.secretPassage.personsInRoom.push(Abschluss.detective);
+    }
+    let paragraph = document.createElement("P");
+    paragraph.innerText = "Herzlich Willkommen in Versailles " + Abschluss.player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";
+    document.body.appendChild(paragraph);
     Abschluss.form = document.createElement("form");
     Abschluss.form.setAttribute("id", "form");
     let elementsCreated = 0;
@@ -101,11 +103,6 @@ var Abschluss;
                 createBodyElementsForAttack();
                 break;
             }
-            case "u": {
-                Abschluss.player.useItem();
-                createBodyElements();
-                break;
-            }
             case "i": {
                 Abschluss.player.showInventory();
                 createBodyElements();
@@ -136,11 +133,12 @@ var Abschluss;
                 break;
             }
             case "p": {
+                document.body.removeChild(Abschluss.form);
                 break;
             }
             default: {
                 let paragraph = document.createElement("P");
-                paragraph.innerText = "Diese Aktion steht nicht zur Verfügung.";
+                paragraph.innerText = "Diese Aktion steht nicht zur Verfügung. Um alle Aktionen sehen zu können, drücke c .";
                 document.body.appendChild(paragraph);
                 createBodyElements();
                 break;
@@ -172,8 +170,8 @@ var Abschluss;
         let inputField = document.getElementById("userInput");
         inputField.setAttribute("onchange", "Abschluss.dropItemFromInventory(Abschluss.submitCharInput())");
     }
-    function dropItemFromInventory(_itemToPick) {
-        Abschluss.player.dropItem(_itemToPick);
+    function dropItemFromInventory(_itemToDrop) {
+        Abschluss.player.dropItem(_itemToDrop);
     }
     Abschluss.dropItemFromInventory = dropItemFromInventory;
     function createInputFieldWithLabel() {
@@ -202,7 +200,7 @@ var Abschluss;
         let personIsPartOfRoom = findPersonInRoom(_personToAttack);
         if (personIsPartOfRoom == -1) {
             let paragraph = document.createElement("P");
-            paragraph.innerText = "Die Person, die du attackieren möchtest befindet sich nicht im Raum.";
+            paragraph.innerText = "Die Person, die du attackieren möchtest, befindet sich nicht im Raum.";
             document.body.appendChild(paragraph);
             createBodyElements();
         }
@@ -212,7 +210,7 @@ var Abschluss;
             }
             else {
                 let paragraph = document.createElement("P");
-                paragraph.innerText = "Die Person, die du attackieren möchtest ist nicht dein Feind. Du kannst diese Person nicht attackieren.";
+                paragraph.innerText = "Die Person, die du attackieren möchtest, ist nicht dein Feind. Du kannst diese Person nicht attackieren.";
                 document.body.appendChild(paragraph);
                 createBodyElements();
             }

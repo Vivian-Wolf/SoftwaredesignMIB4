@@ -57,6 +57,7 @@ namespace Abschluss {
 
     function pushPersons(): void {
         bastille.personsInRoom.push(prisoners);
+        bastille.personsInRoom.push(firstEnemy);
         castleGarden.personsInRoom.push(guardGarden);
         castleEntry.personsInRoom.push(guardEntry);
         mirrorHall.personsInRoom.push(king);

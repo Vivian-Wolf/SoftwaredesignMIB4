@@ -1,7 +1,7 @@
 namespace Abschluss {
     export class Player extends Person {
-        public inventory: string[] = ["ein Schlüssel"];
-        public level: number = 3;
+        public inventory: string[] = [];
+        public level: number = 0;
 
         constructor(_name: string) {
             super();
@@ -200,6 +200,12 @@ namespace Abschluss {
                 let paragraph: HTMLElement = document.createElement("P");
                 paragraph.innerText = "Du bist auf tragische Weise im Battle gestorben. Deine Taten werden zukünftig lediglich in Legenden erzählt.";
                 document.body.appendChild(paragraph);
+
+                let userInput: HTMLElement = document.getElementById("userInput");
+                let inputLabel: HTMLElement = document.getElementById("label");
+                form.removeChild(inputLabel);
+                form.removeChild(userInput);
+                document.body.removeChild(form);
             }
         }
 

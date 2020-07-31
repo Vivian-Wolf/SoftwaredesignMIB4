@@ -128,11 +128,6 @@ namespace Abschluss {
                 createBodyElementsForAttack();
                 break;
             }
-            case "u": {
-                player.useItem();
-                createBodyElements();
-                break;
-            }
             case "i": {
                 player.showInventory();
                 createBodyElements();

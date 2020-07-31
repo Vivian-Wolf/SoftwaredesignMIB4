@@ -4,8 +4,8 @@ var Abschluss;
     class Player extends Abschluss.Person {
         constructor(_name) {
             super();
-            this.inventory = ["ein Schlüssel"];
-            this.level = 3;
+            this.inventory = [];
+            this.level = 0;
             this.name = _name;
         }
         speak() {
@@ -180,6 +180,11 @@ var Abschluss;
                 let paragraph = document.createElement("P");
                 paragraph.innerText = "Du bist auf tragische Weise im Battle gestorben. Deine Taten werden zukünftig lediglich in Legenden erzählt.";
                 document.body.appendChild(paragraph);
+                let userInput = document.getElementById("userInput");
+                let inputLabel = document.getElementById("label");
+                Abschluss.form.removeChild(inputLabel);
+                Abschluss.form.removeChild(userInput);
+                document.body.removeChild(Abschluss.form);
             }
         }
         wonBattle(_enemy) {

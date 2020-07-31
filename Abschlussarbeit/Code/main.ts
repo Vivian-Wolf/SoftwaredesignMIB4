@@ -44,28 +44,25 @@ namespace Abschluss {
     player.lifepoints = 100;
 
     export let prisoners: Enemy = new Enemy("Gefangene", bastille, 40);
-    bastille.personsInRoom.push(prisoners);
-
     export let firstEnemy: Person = new Enemy("Marie Lorean", bastille, 75);
-    bastille.personsInRoom.push(firstEnemy);
-
     export let guardGarden: Enemy = new Enemy("Garde", castleGarden, 60);
-    castleGarden.personsInRoom.push(guardGarden);
-
     export let guardEntry: Enemy = new Enemy("Garde", castleEntry, 100);
-    castleEntry.personsInRoom.push(guardEntry);
-
     export let king: NormalPerson = new NormalPerson("König", mirrorHall, 10);
-    mirrorHall.personsInRoom.push(king);
-
+    export let detective: NormalPerson = new NormalPerson("Dedektiv des Königs", mirrorHall, 200);
+    let mistress: NormalPerson = new NormalPerson("Geliebte des Königs", kingsDressingRoom, 50);
     //export let testPerson: NormalPerson = new NormalPerson("TestPerson", mirrorHall, 200);
     //mirrorHall.personsInRoom.push(testPerson);
+    
+    pushPersons();
 
-    export let detective: NormalPerson = new NormalPerson("Dedektiv des Königs", mirrorHall, 200);
-    secretPassage.personsInRoom.push(detective);
-
-    let mistress: NormalPerson = new NormalPerson("Geliebte des Königs", kingsDressingRoom, 50);
-    kingsDressingRoom.personsInRoom.push(mistress);
+    function pushPersons(): void {
+        bastille.personsInRoom.push(prisoners);
+        castleGarden.personsInRoom.push(guardGarden);
+        castleEntry.personsInRoom.push(guardEntry);
+        mirrorHall.personsInRoom.push(king);
+        kingsDressingRoom.personsInRoom.push(mistress);
+        secretPassage.personsInRoom.push(detective);
+    }
 
     let para: HTMLElement = document.createElement("P");
     para.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";

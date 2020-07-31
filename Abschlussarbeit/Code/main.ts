@@ -162,7 +162,7 @@ namespace Abschluss {
             }
             default: {
                 let paragraph: HTMLElement = document.createElement("P");
-                paragraph.innerText = "Diese Aktion steht nicht zur Verfügung.";
+                paragraph.innerText = "Diese Aktion steht nicht zur Verfügung. Um alle Aktionen sehen zu können, drücke c .";
                 document.body.appendChild(paragraph);
                 createBodyElements();
                 break;

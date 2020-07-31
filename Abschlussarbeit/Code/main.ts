@@ -201,8 +201,8 @@ namespace Abschluss {
         inputField.setAttribute("onchange", "Abschluss.dropItemFromInventory(Abschluss.submitCharInput())");
     }
 
-    export function dropItemFromInventory(_itemToPick: string): void {
-        player.dropItem(_itemToPick);
+    export function dropItemFromInventory(_itemToDrop: string): void {
+        player.dropItem(_itemToDrop);
     }
 
     function createInputFieldWithLabel(): void {

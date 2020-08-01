@@ -65,6 +65,11 @@ namespace Abschluss {
     paragraph.innerText = "Herzlich Willkommen in Versailles " + player.name + "! \n \n Ihre Majestät, der König, erwartet Sie im Spiegelsaal.";
     document.body.appendChild(paragraph);
 
+    let instructions: HTMLElement = document.createElement("P");
+    instructions.innerText = "Bewege Dich mit w, a, s, d nach Norden, Westen, Süden, Osten \n Mit der Eingabe von c erscheinen alle zur Verfügung stehenden Befehle.";
+    instructions.setAttribute("id", "instructions");
+    document.body.appendChild(instructions);
+
     export let form: HTMLElement = document.createElement("form");
     form.setAttribute("id", "form");
 

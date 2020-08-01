@@ -21,7 +21,7 @@ var Abschluss;
             }
             case 3: {
                 let speechDetective = document.createElement("p");
-                speechDetective.innerText = `${Abschluss.firstEnemy.name} sagt: Das Land ist verloren. Der König, er hat die Bürger des Landes gegen sich gerichtet. Marie Lorean wollte ihn nicht töten. Er wollte die Revolution stoppen, nachdem sich auch die niedrigen Adelleute gegen ihn gewandt haben. Diese Schlacht ist verloren. Der einzige Weg den König jetzt noch zu retten, ist ihn selbst dem heiligen Vater zu überlassen.`;
+                speechDetective.innerText = `${Abschluss.detective.name} sagt: Das Land ist verloren. Der König, er hat die Bürger des Landes gegen sich gerichtet. Marie Lorean wollte ihn nicht töten. Er wollte die Revolution stoppen, nachdem sich auch die niedrigen Adelleute gegen ihn gewandt haben. Diese Schlacht ist verloren. Der einzige Weg den König jetzt noch zu retten, ist ihn selbst dem heiligen Vater zu überlassen.`;
                 document.body.appendChild(speechDetective);
                 Abschluss.createBodyElements();
                 Abschluss.mirrorHall.personsInRoom.splice(Abschluss.findPersonInRoom(Abschluss.king.name), 1);
@@ -34,10 +34,6 @@ var Abschluss;
                 let paragraph = document.createElement("P");
                 paragraph.innerText = "Die Revolution nimmt ihren Gang. Ein neuer Staat wurde geboren.";
                 document.body.appendChild(paragraph);
-                let userInput = document.getElementById("userInput");
-                let inputLabel = document.getElementById("label");
-                Abschluss.form.removeChild(inputLabel);
-                Abschluss.form.removeChild(userInput);
                 document.body.removeChild(Abschluss.form);
                 break;
             }

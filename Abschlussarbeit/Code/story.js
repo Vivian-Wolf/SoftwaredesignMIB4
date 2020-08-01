@@ -5,7 +5,7 @@ var Abschluss;
         switch (Abschluss.player.level) {
             case 1: {
                 Abschluss.king.speak();
-                let speech = document.getElementById("speakParagraphNormalPerson");
+                let speech = document.getElementById("speakParagraphStoryCharakter");
                 speech.innerText += " " + Abschluss.player.name + " ein Glück sind Sie endlich hier. " + Abschluss.firstEnemy.name + " hat Hochverrat begangen. Er muss ermordet werden. Diskret. Ich denke, Sie verstehen, was ich meine.";
                 break;
             }
@@ -15,7 +15,7 @@ var Abschluss;
                 speechSecondLevel.innerText += ` Bitte! Verschone mich. Ich bin unschuldig. Ich kann es beweisen. \n${Abschluss.player.name} sagt: Sprich. \n ${Abschluss.firstEnemy.name} sagt: Ich wurde getäuscht. Das Gift wurde in meinen Mantel gesteckt, um die Revolution zu schwächen. \n ${Abschluss.player.name} sagt: Wie willst du das beweisen? \n ${Abschluss.firstEnemy.name} sagt: Suche den Detektiv auf. Er wird dir Beweise liefern.`;
                 Abschluss.player.level = 3;
                 Abschluss.bastille.personsInRoom.splice(Abschluss.findPersonInRoom(Abschluss.firstEnemy.name), 1);
-                Abschluss.firstEnemy = new Abschluss.NormalPerson(Abschluss.firstEnemy.name, Abschluss.firstEnemy.currentRoom, Abschluss.firstEnemy.lifepoints);
+                Abschluss.firstEnemy = new Abschluss.StoryCharacter(Abschluss.firstEnemy.name, Abschluss.firstEnemy.currentRoom, Abschluss.firstEnemy.lifepoints, Abschluss.firstEnemy.canWalkByThemselve);
                 Abschluss.bastille.personsInRoom.push(Abschluss.firstEnemy);
                 break;
             }
@@ -25,7 +25,7 @@ var Abschluss;
                 document.body.appendChild(speechDetective);
                 Abschluss.createBodyElements();
                 Abschluss.mirrorHall.personsInRoom.splice(Abschluss.findPersonInRoom(Abschluss.king.name), 1);
-                Abschluss.king = new Abschluss.Enemy(Abschluss.king.name, Abschluss.king.currentRoom, Abschluss.king.lifepoints);
+                Abschluss.king = new Abschluss.Enemy(Abschluss.king.name, Abschluss.king.currentRoom, Abschluss.king.lifepoints, Abschluss.king.canWalkByThemselve);
                 Abschluss.mirrorHall.personsInRoom.push(Abschluss.king);
                 Abschluss.player.level = 4;
                 break;

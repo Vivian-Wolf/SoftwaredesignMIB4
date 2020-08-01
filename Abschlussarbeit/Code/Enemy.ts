@@ -1,9 +1,10 @@
 namespace Abschluss {
     export class Enemy extends Person {
 
-        constructor(_name: string, _position: Room, _availableLifePoints: number) {
+        constructor(_name: string, _position: Room, _availableLifePoints: number, _canWalkByThemselve: boolean) {
             super(_name, _position, _availableLifePoints);
             this.canBeAttacked = true;
+            this.canWalkByThemselve = _canWalkByThemselve;
         }
 
         public speak(): void {
@@ -23,6 +24,47 @@ namespace Abschluss {
             }
             else {
                 this.lostBattle();
+            }
+        }
+
+        public walk(): void {
+            let posXBackup: number = this.posX;
+            let posYBackup: number = this.posY;
+            if (this.canWalkByThemselve == true) {
+                let randomNumber: number = Math.floor(Math.random() * 4);
+                switch (randomNumber) {
+                    case 0: {
+                        this.posY += 1;
+                        break;
+                    }
+                    case 1: {
+                        this.posX -= 1;
+                        break;
+                    }
+                    case 2: {
+                        this.posY -= 1;
+                        break;
+                    }
+                    case 3: {
+                        this.posX += 1;
+                        break;
+                    }
+                }
+                if (this == guardEntry || this == guardGarden) {
+                    if (gameMap.find(i => i.posX === this.posX && i.posY === this.posY) == secretPassage) {
+                        this.posX = posXBackup;
+                        this.posY = posYBackup;
+                    }
+                }
+                if (this.roomDoesNotExist() == true) {
+                    this.posX = posXBackup;
+                    this.posY = posYBackup;
+                }
+                else {
+                    this.currentRoom.personsInRoom.splice(this.currentRoom.personsInRoom.indexOf(this), 1);
+                    this.currentRoom = gameMap.find(i => i.posX === this.posX && i.posY === this.posY);
+                    this.currentRoom.personsInRoom.push(this);
+                }
             }
         }
 

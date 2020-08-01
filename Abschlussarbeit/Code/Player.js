@@ -5,17 +5,17 @@ var Abschluss;
         constructor() {
             super(...arguments);
             this.inventory = [];
-            this.level = 1;
+            this.level = 0;
         }
         speak() {
             if (this.currentRoom == Abschluss.mirrorHall && this.level == 0) {
                 this.level = 1;
                 Abschluss.story();
             }
-            if (this.currentRoom == Abschluss.secretPassage && this.level == 3) {
+            else if (this.currentRoom == Abschluss.secretPassage && this.level == 3) {
                 Abschluss.story();
             }
-            if (this.currentRoom.personsInRoom.length == 1 && this.level != 1 && this.level != 3) {
+            else if (this.currentRoom.personsInRoom.length == 1) {
                 this.currentRoom.personsInRoom[0].speak();
             }
             else if (this.currentRoom.personsInRoom.length == 0) {
@@ -25,9 +25,7 @@ var Abschluss;
                 Abschluss.createBodyElements();
             }
             else if (this.currentRoom.personsInRoom.length > 1) {
-                if (this.level == 0 || this.level > 3) {
-                    this.createBodyElementsForSpeak();
-                }
+                this.createBodyElementsForSpeak();
             }
         }
         changePosition(_userInput) {
@@ -140,14 +138,6 @@ var Abschluss;
             let inputField = document.getElementById("userInput");
             inputField.removeAttribute("onchange");
             inputField.setAttribute("onchange", "Abschluss.checkIfPlayerCanSpeakToPerson(Abschluss.submitCharInput())");
-        }
-        roomDoesNotExist() {
-            let roomNotThere = false;
-            let foundRoom = Abschluss.gameMap.find(i => i.posX === this.posX && i.posY === this.posY);
-            if (foundRoom == undefined) {
-                roomNotThere = true;
-            }
-            return roomNotThere;
         }
         checkIfPlayerIsAttacked() {
             if (this.currentRoom.personsInRoom.indexOf(Abschluss.guardEntry) >= 0 && this.level == 4) {

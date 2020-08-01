@@ -30,16 +30,14 @@ namespace Abschluss {
 
     export let player: Player = new Player("Lord Mercier", castleEntry, 100);
 
-    export let prisoners: Enemy = new Enemy("Gefangene", bastille, 40);
-    export let firstEnemy: Person = new Enemy("Marie Lorean", bastille, 75);
-    export let guardGarden: Enemy = new Enemy("Garde", castleGarden, 60);
-    export let guardEntry: Enemy = new Enemy("Garde", castleEntry, 100);
-    export let king: NormalPerson = new NormalPerson("König", mirrorHall, 10);
-    export let detective: NormalPerson = new NormalPerson("Dedektiv des Königs", mirrorHall, 200);
-    let mistress: NormalPerson = new NormalPerson("Geliebte des Königs", kingsDressingRoom, 50);
-    //export let testPerson: NormalPerson = new NormalPerson("TestPerson", mirrorHall, 200);
-    //mirrorHall.personsInRoom.push(testPerson);
-    
+    export let prisoners: NormalPerson = new NormalPerson("Gefangene", bastille, 40, false, ["Wer anderen die Freiheit verweigert, verdient sie nicht für sich selbst", "Lasst die Revolution herrschen.", "Und eines Tages bin ich wieder frei und sag mir, wer Dich dann noch retten kann.");
+    export let firstEnemy: Person = new Enemy("Marie Lorean", bastille, 75, false);
+    export let guardGarden: Enemy = new Enemy("Königsgarde", castleGarden, 60, true);
+    export let guardEntry: Enemy = new Enemy("Königsgarde", castleEntry, 100, true);
+    export let king: StoryCharacter = new StoryCharacter("König", mirrorHall, 10, false);
+    export let detective: StoryCharacter = new StoryCharacter("Dedektiv des Königs", secretPassage, 200, false);
+    let mistress: NormalPerson = new NormalPerson("Geliebte des Königs", kingsDressingRoom, 50, true, ["Hier wird es nur eine Herrin geben und keinen Herrn.", "Charme und Perfektion vertragen sich schlecht miteinander. Charme setzt kleine Fehler voraus.", "Gäbe es die Königin nicht, wäre ich Königin."]);
+
     pushMaps();
 
     function pushMaps(): void {
@@ -50,7 +48,7 @@ namespace Abschluss {
         gameMap.push(mirrorHall);
         gameMap.push(kingsDressingRoom);
     }
-    
+
     pushPersons();
 
     function pushPersons(): void {
@@ -147,21 +145,25 @@ namespace Abschluss {
                 break;
             }
             case "a": {
+                letCharactersWalk();
                 player.changePosition(submitCharInput());
                 createBodyElements();
                 break;
             }
             case "w": {
+                letCharactersWalk();
                 player.changePosition(submitCharInput());
                 createBodyElements();
                 break;
             }
             case "d": {
+                letCharactersWalk();
                 player.changePosition(submitCharInput());
                 createBodyElements();
                 break;
             }
             case "s": {
+                letCharactersWalk();
                 player.changePosition(submitCharInput());
                 createBodyElements();
                 break;
@@ -186,7 +188,7 @@ namespace Abschluss {
 
     function showCommands(): void {
         let paragraph: HTMLElement = document.createElement("P");
-        paragraph.innerText = "Folgende Kommandos stehen zur Verfügung: \n kommandos (c), umschauen (l), nach Norden (w) / Süden (s) / Osten (d) / Westen (a) gehen, Inventar anzeigen (i), Item aufnehmen (t), Item zurücklegen (d), Item benutzen (u), attack (a), mit Person sprechen (e),  Spiel beenden (q)";
+        paragraph.innerText = "Folgende Kommandos stehen zur Verfügung: \n kommandos (c), umschauen (l), nach Norden (w) / Süden (s) / Osten (d) / Westen (a) gehen, Inventar anzeigen (i), Item aufnehmen (t), Item zurücklegen (g), attack (q), mit Person sprechen (e),  Spiel beenden (p)";
         document.body.appendChild(paragraph);
     }
 
@@ -247,6 +249,14 @@ namespace Abschluss {
                 paragraph.innerText = "Die Person, die du attackieren möchtest, ist nicht dein Feind. Du kannst diese Person nicht attackieren.";
                 document.body.appendChild(paragraph);
                 createBodyElements();
+            }
+        }
+    }
+
+    function letCharactersWalk(): void {
+        for (let i: number = 0; i < gameMap.length; i++) {
+            for (let j: number = 0; j < gameMap[i].personsInRoom.length; j++) {
+                gameMap[i].personsInRoom[j].walk();
             }
         }
     }

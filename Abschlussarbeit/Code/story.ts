@@ -3,7 +3,7 @@ namespace Abschluss {
         switch (player.level) {
             case 1: {
                 king.speak();
-                let speech: HTMLElement = document.getElementById("speakParagraphNormalPerson");
+                let speech: HTMLElement = document.getElementById("speakParagraphStoryCharakter");
                 speech.innerText += " " + player.name + " ein Glück sind Sie endlich hier. " + firstEnemy.name + " hat Hochverrat begangen. Er muss ermordet werden. Diskret. Ich denke, Sie verstehen, was ich meine.";
                 break;
             }
@@ -13,7 +13,7 @@ namespace Abschluss {
                 speechSecondLevel.innerText += ` Bitte! Verschone mich. Ich bin unschuldig. Ich kann es beweisen. \n${player.name} sagt: Sprich. \n ${firstEnemy.name} sagt: Ich wurde getäuscht. Das Gift wurde in meinen Mantel gesteckt, um die Revolution zu schwächen. \n ${player.name} sagt: Wie willst du das beweisen? \n ${firstEnemy.name} sagt: Suche den Detektiv auf. Er wird dir Beweise liefern.`;
                 player.level = 3;
                 bastille.personsInRoom.splice(findPersonInRoom(firstEnemy.name), 1);
-                firstEnemy = new NormalPerson(firstEnemy.name, firstEnemy.currentRoom, firstEnemy.lifepoints);
+                firstEnemy = new StoryCharacter(firstEnemy.name, firstEnemy.currentRoom, firstEnemy.lifepoints, firstEnemy.canWalkByThemselve);
                 bastille.personsInRoom.push(firstEnemy);
                 break;
             }
@@ -23,7 +23,7 @@ namespace Abschluss {
                 document.body.appendChild(speechDetective);
                 createBodyElements();
                 mirrorHall.personsInRoom.splice(findPersonInRoom(king.name), 1);
-                king = new Enemy(king.name, king.currentRoom, king.lifepoints);
+                king = new Enemy(king.name, king.currentRoom, king.lifepoints, king.canWalkByThemselve);
                 mirrorHall.personsInRoom.push(king);
                 player.level = 4;
                 break;

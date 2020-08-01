@@ -1,7 +1,7 @@
 namespace Abschluss {
     export class Player extends Person {
         public inventory: string[] = [];
-        public level: number = 1;
+        public level: number = 0;
 
         public speak(): void {
             if (this.currentRoom == mirrorHall && this.level == 0) {
@@ -9,10 +9,10 @@ namespace Abschluss {
                 story();
 
             }
-            if (this.currentRoom == secretPassage && this.level == 3) {
+            else if (this.currentRoom == secretPassage && this.level == 3) {
                 story();
             }
-            if (this.currentRoom.personsInRoom.length == 1 && this.level != 1 && this.level != 3) {
+            else if (this.currentRoom.personsInRoom.length == 1) {
                 this.currentRoom.personsInRoom[0].speak();
             } else if (this.currentRoom.personsInRoom.length == 0) {
                 let paragraph: HTMLElement = document.createElement("P");
@@ -21,9 +21,7 @@ namespace Abschluss {
                 createBodyElements();
             }
             else if (this.currentRoom.personsInRoom.length > 1) {
-                if (this.level == 0 || this.level > 3) {
-                    this.createBodyElementsForSpeak();
-                }
+                this.createBodyElementsForSpeak();
             }
         }
 
@@ -145,15 +143,6 @@ namespace Abschluss {
             let inputField: HTMLElement = document.getElementById("userInput");
             inputField.removeAttribute("onchange");
             inputField.setAttribute("onchange", "Abschluss.checkIfPlayerCanSpeakToPerson(Abschluss.submitCharInput())");
-        }
-
-        private roomDoesNotExist(): boolean {
-            let roomNotThere: boolean = false;
-            let foundRoom: Room = gameMap.find(i => i.posX === this.posX && i.posY === this.posY);
-            if (foundRoom == undefined) {
-                roomNotThere = true;
-            }
-            return roomNotThere;
         }
 
         private checkIfPlayerIsAttacked(): void {

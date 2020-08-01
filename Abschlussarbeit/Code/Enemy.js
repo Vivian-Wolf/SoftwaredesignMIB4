@@ -2,9 +2,10 @@
 var Abschluss;
 (function (Abschluss) {
     class Enemy extends Abschluss.Person {
-        constructor(_name, _position, _availableLifePoints) {
+        constructor(_name, _position, _availableLifePoints, _canWalkByThemselve) {
             super(_name, _position, _availableLifePoints);
             this.canBeAttacked = true;
+            this.canWalkByThemselve = _canWalkByThemselve;
         }
         speak() {
             let paragraph = document.createElement("P");
@@ -21,6 +22,46 @@ var Abschluss;
             }
             else {
                 this.lostBattle();
+            }
+        }
+        walk() {
+            let posXBackup = this.posX;
+            let posYBackup = this.posY;
+            if (this.canWalkByThemselve == true) {
+                let randomNumber = Math.floor(Math.random() * 4);
+                switch (randomNumber) {
+                    case 0: {
+                        this.posY += 1;
+                        break;
+                    }
+                    case 1: {
+                        this.posX -= 1;
+                        break;
+                    }
+                    case 2: {
+                        this.posY -= 1;
+                        break;
+                    }
+                    case 3: {
+                        this.posX += 1;
+                        break;
+                    }
+                }
+                if (this == Abschluss.guardEntry || this == Abschluss.guardGarden) {
+                    if (Abschluss.gameMap.find(i => i.posX === this.posX && i.posY === this.posY) == Abschluss.secretPassage) {
+                        this.posX = posXBackup;
+                        this.posY = posYBackup;
+                    }
+                }
+                if (this.roomDoesNotExist() == true) {
+                    this.posX = posXBackup;
+                    this.posY = posYBackup;
+                }
+                else {
+                    this.currentRoom.personsInRoom.splice(this.currentRoom.personsInRoom.indexOf(this), 1);
+                    this.currentRoom = Abschluss.gameMap.find(i => i.posX === this.posX && i.posY === this.posY);
+                    this.currentRoom.personsInRoom.push(this);
+                }
             }
         }
         lostBattle() {

@@ -19,15 +19,13 @@ var Abschluss;
     kingsDressingRoom = new Abschluss.Room("Ankleidezimmer des Königs", "die privaten Gemächer des Königs", 1, 1);
     kingsDressingRoom.objectsInRoom.push("eine Kerze", "ein Schlüssel");
     Abschluss.player = new Abschluss.Player("Lord Mercier", castleEntry, 100);
-    Abschluss.prisoners = new Abschluss.Enemy("Gefangene", Abschluss.bastille, 40);
-    Abschluss.firstEnemy = new Abschluss.Enemy("Marie Lorean", Abschluss.bastille, 75);
-    Abschluss.guardGarden = new Abschluss.Enemy("Garde", castleGarden, 60);
-    Abschluss.guardEntry = new Abschluss.Enemy("Garde", castleEntry, 100);
-    Abschluss.king = new Abschluss.NormalPerson("König", Abschluss.mirrorHall, 10);
-    Abschluss.detective = new Abschluss.NormalPerson("Dedektiv des Königs", Abschluss.mirrorHall, 200);
-    let mistress = new Abschluss.NormalPerson("Geliebte des Königs", kingsDressingRoom, 50);
-    //export let testPerson: NormalPerson = new NormalPerson("TestPerson", mirrorHall, 200);
-    //mirrorHall.personsInRoom.push(testPerson);
+    Abschluss.prisoners = new Abschluss.NormalPerson("Gefangene", Abschluss.bastille, 40, false, ["Wer anderen die Freiheit verweigert, verdient sie nicht für sich selbst", "Lasst die Revolution herrschen.", "Und eines Tages bin ich wieder frei und sag mir, wer Dich dann noch retten kann."]);
+    Abschluss.firstEnemy = new Abschluss.Enemy("Marie Lorean", Abschluss.bastille, 75, false);
+    Abschluss.guardGarden = new Abschluss.Enemy("Königsgarde", castleGarden, 60, true);
+    Abschluss.guardEntry = new Abschluss.Enemy("Königsgarde", castleEntry, 100, true);
+    Abschluss.king = new Abschluss.StoryCharacter("König", Abschluss.mirrorHall, 10, false);
+    Abschluss.detective = new Abschluss.StoryCharacter("Dedektiv des Königs", Abschluss.secretPassage, 200, false);
+    let mistress = new Abschluss.NormalPerson("Geliebte des Königs", kingsDressingRoom, 50, true, ["Hier wird es nur eine Herrin geben und keinen Herrn.", "Charme und Perfektion vertragen sich schlecht miteinander. Charme setzt kleine Fehler voraus.", "Gäbe es die Königin nicht, wäre ich Königin."]);
     pushMaps();
     function pushMaps() {
         Abschluss.gameMap.push(castleEntry);
@@ -122,21 +120,25 @@ var Abschluss;
                 break;
             }
             case "a": {
+                letCharactersWalk();
                 Abschluss.player.changePosition(submitCharInput());
                 createBodyElements();
                 break;
             }
             case "w": {
+                letCharactersWalk();
                 Abschluss.player.changePosition(submitCharInput());
                 createBodyElements();
                 break;
             }
             case "d": {
+                letCharactersWalk();
                 Abschluss.player.changePosition(submitCharInput());
                 createBodyElements();
                 break;
             }
             case "s": {
+                letCharactersWalk();
                 Abschluss.player.changePosition(submitCharInput());
                 createBodyElements();
                 break;
@@ -161,7 +163,7 @@ var Abschluss;
     Abschluss.processUserInput = processUserInput;
     function showCommands() {
         let paragraph = document.createElement("P");
-        paragraph.innerText = "Folgende Kommandos stehen zur Verfügung: \n kommandos (c), umschauen (l), nach Norden (w) / Süden (s) / Osten (d) / Westen (a) gehen, Inventar anzeigen (i), Item aufnehmen (t), Item zurücklegen (d), Item benutzen (u), attack (a), mit Person sprechen (e),  Spiel beenden (q)";
+        paragraph.innerText = "Folgende Kommandos stehen zur Verfügung: \n kommandos (c), umschauen (l), nach Norden (w) / Süden (s) / Osten (d) / Westen (a) gehen, Inventar anzeigen (i), Item aufnehmen (t), Item zurücklegen (g), attack (q), mit Person sprechen (e),  Spiel beenden (p)";
         document.body.appendChild(paragraph);
     }
     function createBodyElementsForItemPicker() {
@@ -216,6 +218,13 @@ var Abschluss;
         }
     }
     Abschluss.checkIfPersonCanBeAttacked = checkIfPersonCanBeAttacked;
+    function letCharactersWalk() {
+        for (let i = 0; i < Abschluss.gameMap.length; i++) {
+            for (let j = 0; j < Abschluss.gameMap[i].personsInRoom.length; j++) {
+                Abschluss.gameMap[i].personsInRoom[j].walk();
+            }
+        }
+    }
     function findPersonInRoom(_personToFind) {
         let indexOfFoundPerson = -1;
         let personsToCheck = Abschluss.player.currentRoom.personsInRoom;

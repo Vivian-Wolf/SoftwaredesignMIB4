@@ -2,11 +2,10 @@
 var Abschluss;
 (function (Abschluss) {
     class Player extends Abschluss.Person {
-        constructor(_name) {
-            super();
+        constructor() {
+            super(...arguments);
             this.inventory = [];
             this.level = 1;
-            this.name = _name;
         }
         speak() {
             if (this.currentRoom == Abschluss.mirrorHall && this.level == 0) {
@@ -25,16 +24,16 @@ var Abschluss;
                 document.body.appendChild(paragraph);
                 Abschluss.createBodyElements();
             }
-            else if (this.currentRoom.personsInRoom.length > 1 && this.level != 2 && this.level != 1 && this.level != 3) {
-                this.createBodyElementsForSpeak();
+            else if (this.currentRoom.personsInRoom.length > 1) {
+                if (this.level == 0 || this.level > 3) {
+                    this.createBodyElementsForSpeak();
+                }
             }
         }
         changePosition(_userInput) {
-            // Backups the current position in case there is no room where the player is moving to
-            let playerposXBackup = this.posX;
-            let playerposYBackup = this.posY;
+            let playerPosXBackup = this.posX;
+            let playerPosYBackup = this.posY;
             switch (_userInput) {
-                // Changes Player position based on input
                 case "w": {
                     this.posY += 1;
                     break;
@@ -55,15 +54,14 @@ var Abschluss;
                     break;
                 }
             }
-            if (this.findRoom() == true) {
-                this.posX = playerposXBackup;
-                this.posY = playerposYBackup;
-                console.log("Position reset to " + this.posX + " " + this.posY);
+            if (this.roomDoesNotExist() == true) {
+                this.posX = playerPosXBackup;
+                this.posY = playerPosYBackup;
             }
             if (this.posX == Abschluss.secretPassage.posX && this.posY == Abschluss.secretPassage.posY) {
                 if (this.inventory.indexOf("ein Schlüssel") == -1) {
-                    this.posX = playerposXBackup;
-                    this.posY = playerposYBackup;
+                    this.posX = playerPosXBackup;
+                    this.posY = playerPosYBackup;
                     let paragraphResetPosition = document.createElement("p");
                     paragraphResetPosition.innerText = "Der Geheimgang kann nur mit einem Schlüssel begangen werden.";
                     document.body.appendChild(paragraphResetPosition);
@@ -71,23 +69,7 @@ var Abschluss;
             }
             this.currentRoom = Abschluss.gameMap.find(i => i.posX === this.posX && i.posY === this.posY);
             this.look();
-            if (this.currentRoom.personsInRoom.indexOf(Abschluss.guardEntry) >= 0 && this.level == 4) {
-                Abschluss.guardEntry.attack();
-            }
-            if (this.currentRoom.personsInRoom.indexOf(Abschluss.guardGarden) >= 0 && this.level == 4) {
-                Abschluss.guardGarden.attack();
-            }
-        }
-        findRoom() {
-            let roomNotThere = false;
-            let foundRoom = Abschluss.gameMap.find(i => i.posX === this.posX && i.posY === this.posY);
-            if (foundRoom == undefined) {
-                roomNotThere = true;
-            }
-            else {
-                roomNotThere = false;
-            }
-            return roomNotThere;
+            this.checkIfPlayerIsAttacked();
         }
         look() {
             this.currentRoom.toString();
@@ -100,18 +82,16 @@ var Abschluss;
             else {
                 inventoryParagraph.innerText = "Dein Inventar beinhaltet: " + this.inventory[0];
                 for (let i = 1; i < this.inventory.length; i++) {
-                    inventoryParagraph.innerText += this.inventory[i];
+                    inventoryParagraph.innerText += ", " + this.inventory[i];
                 }
             }
             document.body.appendChild(inventoryParagraph);
         }
-        takeItem(_userInput) {
-            let itemToPick;
+        takeItem(_itemToPick) {
             let indexOfItemToPick;
-            itemToPick = _userInput;
-            indexOfItemToPick = this.findPositionOfItemToPick(itemToPick);
+            indexOfItemToPick = this.findPositionOfItemToPick(_itemToPick);
             if (indexOfItemToPick > -1) {
-                this.inventory.push(_userInput);
+                this.inventory.push(_itemToPick);
                 this.currentRoom.objectsInRoom.splice(indexOfItemToPick, 1);
             }
             else {
@@ -122,13 +102,11 @@ var Abschluss;
             this.look();
             Abschluss.createBodyElements();
         }
-        dropItem(_userInput) {
-            let itemToDrop;
+        dropItem(_itemToDrop) {
             let indexOfItemToDrop;
-            itemToDrop = _userInput;
-            indexOfItemToDrop = this.findPositionOfItemToDrop(itemToDrop);
+            indexOfItemToDrop = this.findPositionOfItemToDrop(_itemToDrop);
             if (indexOfItemToDrop > -1) {
-                this.currentRoom.objectsInRoom.push(_userInput);
+                this.currentRoom.objectsInRoom.push(_itemToDrop);
                 this.inventory.splice(indexOfItemToDrop, 1);
             }
             else {
@@ -138,16 +116,6 @@ var Abschluss;
             }
             this.look();
             Abschluss.createBodyElements();
-        }
-        findPositionOfItemToPick(_itemToCheck) {
-            let indexOfObjetInTheRoom;
-            indexOfObjetInTheRoom = this.currentRoom.objectsInRoom.indexOf(_itemToCheck);
-            return indexOfObjetInTheRoom;
-        }
-        findPositionOfItemToDrop(_itemToCheck) {
-            let indexOfObjetInTheInventory;
-            indexOfObjetInTheInventory = this.inventory.indexOf(_itemToCheck);
-            return indexOfObjetInTheInventory;
         }
         attack(_personToAttack) {
             let randomNumber;
@@ -165,6 +133,40 @@ var Abschluss;
                 }
             }
         }
+        createBodyElementsForSpeak() {
+            Abschluss.createBodyElements();
+            let inputLabel = document.getElementById("label");
+            inputLabel.innerText = "Mit wem möchtest du sprechen?:";
+            let inputField = document.getElementById("userInput");
+            inputField.removeAttribute("onchange");
+            inputField.setAttribute("onchange", "Abschluss.checkIfPlayerCanSpeakToPerson(Abschluss.submitCharInput())");
+        }
+        roomDoesNotExist() {
+            let roomNotThere = false;
+            let foundRoom = Abschluss.gameMap.find(i => i.posX === this.posX && i.posY === this.posY);
+            if (foundRoom == undefined) {
+                roomNotThere = true;
+            }
+            return roomNotThere;
+        }
+        checkIfPlayerIsAttacked() {
+            if (this.currentRoom.personsInRoom.indexOf(Abschluss.guardEntry) >= 0 && this.level == 4) {
+                Abschluss.guardEntry.attack();
+            }
+            if (this.currentRoom.personsInRoom.indexOf(Abschluss.guardGarden) >= 0 && this.level == 4) {
+                Abschluss.guardGarden.attack();
+            }
+        }
+        findPositionOfItemToPick(_itemToCheck) {
+            let indexOfObjetInTheRoom;
+            indexOfObjetInTheRoom = this.currentRoom.objectsInRoom.indexOf(_itemToCheck);
+            return indexOfObjetInTheRoom;
+        }
+        findPositionOfItemToDrop(_itemToCheck) {
+            let indexOfObjetInTheInventory;
+            indexOfObjetInTheInventory = this.inventory.indexOf(_itemToCheck);
+            return indexOfObjetInTheInventory;
+        }
         lostBattle() {
             let paragraph = document.createElement("P");
             paragraph.innerText = "Du hast das Battle verloren.";
@@ -180,10 +182,6 @@ var Abschluss;
                 let paragraph = document.createElement("P");
                 paragraph.innerText = "Du bist auf tragische Weise im Battle gestorben. Deine Taten werden zukünftig lediglich in Legenden erzählt.";
                 document.body.appendChild(paragraph);
-                let userInput = document.getElementById("userInput");
-                let inputLabel = document.getElementById("label");
-                Abschluss.form.removeChild(inputLabel);
-                Abschluss.form.removeChild(userInput);
                 document.body.removeChild(Abschluss.form);
             }
         }
@@ -209,17 +207,6 @@ var Abschluss;
                 this.level = 5;
                 Abschluss.story();
             }
-        }
-        useItem() {
-            console.log("Item wird benutzt!");
-        }
-        createBodyElementsForSpeak() {
-            Abschluss.createBodyElements();
-            let inputLabel = document.getElementById("label");
-            inputLabel.innerText = "Mit wem möchtest du sprechen?:";
-            let inputField = document.getElementById("userInput");
-            inputField.removeAttribute("onchange");
-            inputField.setAttribute("onchange", "Abschluss.checkIfPlayerCanSpeakToPerson(Abschluss.submitCharInput())");
         }
     }
     Abschluss.Player = Player;

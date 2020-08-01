@@ -3,12 +3,7 @@ var Abschluss;
 (function (Abschluss) {
     class Enemy extends Abschluss.Person {
         constructor(_name, _position, _availableLifePoints) {
-            super();
-            this.name = _name;
-            this.currentRoom = _position;
-            this.posX = this.currentRoom.posX;
-            this.posY = this.currentRoom.posY;
-            this.lifepoints = _availableLifePoints;
+            super(_name, _position, _availableLifePoints);
             this.canBeAttacked = true;
         }
         speak() {
@@ -34,15 +29,16 @@ var Abschluss;
             document.body.appendChild(paragraph);
             Abschluss.player.lifepoints -= 20;
             if (Abschluss.player.lifepoints > 0) {
-                let paragraph = document.createElement("P");
-                paragraph.innerText = "Dir bleiben noch " + Abschluss.player.lifepoints + " Lebenspunkte.";
-                document.body.appendChild(paragraph);
+                let newParagraph = document.createElement("P");
+                newParagraph.innerText = "Dir bleiben noch " + Abschluss.player.lifepoints + " Lebenspunkte.";
+                document.body.appendChild(newParagraph);
                 Abschluss.createBodyElements();
             }
             else {
-                let paragraph = document.createElement("P");
-                paragraph.innerText = "Du bist auf tragische Weise im Battle gestorben. Deine Taten werden zukünftig lediglich in Legenden erzählt.";
-                document.body.appendChild(paragraph);
+                let newParagraph = document.createElement("P");
+                newParagraph.innerText = "Du bist auf tragische Weise im Battle gestorben. Deine Taten werden zukünftig lediglich in Legenden erzählt.";
+                document.body.appendChild(newParagraph);
+                document.body.removeChild(Abschluss.form);
             }
         }
         wonBattle() {
@@ -51,14 +47,14 @@ var Abschluss;
             document.body.appendChild(paragraph);
             this.lifepoints -= 20;
             if (this.lifepoints > 0) {
-                let paragraph = document.createElement("P");
-                paragraph.innerText = " " + this.name + " verbleiben noch " + this.lifepoints + " Lebenspunkte.";
-                document.body.appendChild(paragraph);
+                let newParagraph = document.createElement("P");
+                newParagraph.innerText = " " + this.name + " verbleiben noch " + this.lifepoints + " Lebenspunkte.";
+                document.body.appendChild(newParagraph);
             }
             else {
-                let paragraph = document.createElement("P");
-                paragraph.innerText = "Sieg! " + this.name + " wurde getötet.";
-                document.body.appendChild(paragraph);
+                let newParagraph = document.createElement("P");
+                newParagraph.innerText = "Sieg! " + this.name + " wurde getötet.";
+                document.body.appendChild(newParagraph);
                 this.currentRoom.personsInRoom.splice(this.currentRoom.personsInRoom.indexOf(this), 1);
             }
             Abschluss.createBodyElements();

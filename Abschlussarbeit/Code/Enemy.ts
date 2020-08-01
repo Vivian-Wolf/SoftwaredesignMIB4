@@ -2,12 +2,7 @@ namespace Abschluss {
     export class Enemy extends Person {
 
         constructor(_name: string, _position: Room, _availableLifePoints: number) {
-            super();
-            this.name = _name;
-            this.currentRoom = _position;
-            this.posX = this.currentRoom.posX;
-            this.posY = this.currentRoom.posY;
-            this.lifepoints = _availableLifePoints;
+            super(_name, _position, _availableLifePoints);
             this.canBeAttacked = true;
         }
 
@@ -31,7 +26,7 @@ namespace Abschluss {
             }
         }
 
-        public lostBattle(): void {
+        private lostBattle(): void {
             let paragraph: HTMLElement = document.createElement("P");
             paragraph.innerText = "Du wurdest von " + this.name + " angegriffen. Du hast das Battle verloren.";
             document.body.appendChild(paragraph);
@@ -39,18 +34,19 @@ namespace Abschluss {
             player.lifepoints -= 20;
 
             if (player.lifepoints > 0) {
-                let paragraph: HTMLElement = document.createElement("P");
-                paragraph.innerText = "Dir bleiben noch " + player.lifepoints + " Lebenspunkte.";
-                document.body.appendChild(paragraph);
+                let newParagraph: HTMLElement = document.createElement("P");
+                newParagraph.innerText = "Dir bleiben noch " + player.lifepoints + " Lebenspunkte.";
+                document.body.appendChild(newParagraph);
                 createBodyElements();
             } else {
-                let paragraph: HTMLElement = document.createElement("P");
-                paragraph.innerText = "Du bist auf tragische Weise im Battle gestorben. Deine Taten werden zukünftig lediglich in Legenden erzählt.";
-                document.body.appendChild(paragraph);
+                let newParagraph: HTMLElement = document.createElement("P");
+                newParagraph.innerText = "Du bist auf tragische Weise im Battle gestorben. Deine Taten werden zukünftig lediglich in Legenden erzählt.";
+                document.body.appendChild(newParagraph);
+                document.body.removeChild(form);
             }
         }
 
-        public wonBattle(): void {
+        private wonBattle(): void {
             let paragraph: HTMLElement = document.createElement("P");
             paragraph.innerText = "Du wurdest von " + this.name + " angegriffen. Du hast das Battle gewonnen.";
             document.body.appendChild(paragraph);
@@ -58,13 +54,13 @@ namespace Abschluss {
             this.lifepoints -= 20;
 
             if (this.lifepoints > 0) {
-                let paragraph: HTMLElement = document.createElement("P");
-                paragraph.innerText = " " + this.name + " verbleiben noch " + this.lifepoints + " Lebenspunkte.";
-                document.body.appendChild(paragraph);
+                let newParagraph: HTMLElement = document.createElement("P");
+                newParagraph.innerText = " " + this.name + " verbleiben noch " + this.lifepoints + " Lebenspunkte.";
+                document.body.appendChild(newParagraph);
             } else {
-                let paragraph: HTMLElement = document.createElement("P");
-                paragraph.innerText = "Sieg! " + this.name + " wurde getötet.";
-                document.body.appendChild(paragraph);
+                let newParagraph: HTMLElement = document.createElement("P");
+                newParagraph.innerText = "Sieg! " + this.name + " wurde getötet.";
+                document.body.appendChild(newParagraph);
                 this.currentRoom.personsInRoom.splice(this.currentRoom.personsInRoom.indexOf(this), 1);
             }
             createBodyElements();

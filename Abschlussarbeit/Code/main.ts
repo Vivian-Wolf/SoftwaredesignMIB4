@@ -28,9 +28,7 @@ namespace Abschluss {
     kingsDressingRoom = new Room("Ankleidezimmer des Königs", "die privaten Gemächer des Königs", 1, 1);
     kingsDressingRoom.objectsInRoom.push("eine Kerze", "ein Schlüssel");
 
-    export let player: Player = new Player("Lord Mercier");
-    player.currentRoom = castleEntry;
-    player.lifepoints = 100;
+    export let player: Player = new Player("Lord Mercier", castleEntry, 100);
 
     export let prisoners: Enemy = new Enemy("Gefangene", bastille, 40);
     export let firstEnemy: Person = new Enemy("Marie Lorean", bastille, 75);

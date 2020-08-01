@@ -1,7 +1,7 @@
 namespace Abschluss {
     export class Player extends Person {
         public inventory: string[] = [];
-        public level: number = 0;
+        public level: number = 1;
 
         constructor(_name: string) {
             super();

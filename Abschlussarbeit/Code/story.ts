@@ -11,7 +11,6 @@ namespace Abschluss {
                 firstEnemy.speak();
                 let speechSecondLevel: HTMLElement = document.getElementById("speakParagraphEnemy");
                 speechSecondLevel.innerText += ` Bitte! Verschone mich. Ich bin unschuldig. Ich kann es beweisen. \n${player.name} sagt: Sprich. \n ${firstEnemy.name} sagt: Ich wurde getäuscht. Das Gift wurde in meinen Mantel gesteckt, um die Revolution zu schwächen. \n ${player.name} sagt: Wie willst du das beweisen? \n ${firstEnemy.name} sagt: Suche den Detektiv auf. Er wird dir Beweise liefern.`;
-                createBodyElements();
                 player.level = 3;
                 bastille.personsInRoom.splice(findPersonInRoom(firstEnemy.name), 1);
                 firstEnemy = new NormalPerson(firstEnemy.name, firstEnemy.currentRoom, firstEnemy.lifepoints);

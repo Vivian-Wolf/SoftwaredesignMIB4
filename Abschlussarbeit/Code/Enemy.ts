@@ -16,6 +16,7 @@ namespace Abschluss {
             paragraph.setAttribute("id", "speakParagraphEnemy");
             paragraph.innerText = "" + this.name + " sagt: ";
             document.body.appendChild(paragraph);
+            createBodyElements();
         }
 
         public attack(): void {

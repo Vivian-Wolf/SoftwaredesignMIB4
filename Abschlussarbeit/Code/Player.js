@@ -5,7 +5,7 @@ var Abschluss;
         constructor(_name) {
             super();
             this.inventory = [];
-            this.level = 0;
+            this.level = 1;
             this.name = _name;
         }
         speak() {

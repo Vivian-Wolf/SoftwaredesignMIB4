@@ -16,6 +16,7 @@ var Abschluss;
             paragraph.setAttribute("id", "speakParagraphEnemy");
             paragraph.innerText = "" + this.name + " sagt: ";
             document.body.appendChild(paragraph);
+            Abschluss.createBodyElements();
         }
         attack() {
             let randomNumber;

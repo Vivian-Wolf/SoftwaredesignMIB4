@@ -13,7 +13,6 @@ var Abschluss;
                 Abschluss.firstEnemy.speak();
                 let speechSecondLevel = document.getElementById("speakParagraphEnemy");
                 speechSecondLevel.innerText += ` Bitte! Verschone mich. Ich bin unschuldig. Ich kann es beweisen. \n${Abschluss.player.name} sagt: Sprich. \n ${Abschluss.firstEnemy.name} sagt: Ich wurde getäuscht. Das Gift wurde in meinen Mantel gesteckt, um die Revolution zu schwächen. \n ${Abschluss.player.name} sagt: Wie willst du das beweisen? \n ${Abschluss.firstEnemy.name} sagt: Suche den Detektiv auf. Er wird dir Beweise liefern.`;
-                Abschluss.createBodyElements();
                 Abschluss.player.level = 3;
                 Abschluss.bastille.personsInRoom.splice(Abschluss.findPersonInRoom(Abschluss.firstEnemy.name), 1);
                 Abschluss.firstEnemy = new Abschluss.NormalPerson(Abschluss.firstEnemy.name, Abschluss.firstEnemy.currentRoom, Abschluss.firstEnemy.lifepoints);

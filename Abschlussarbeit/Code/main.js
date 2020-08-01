@@ -42,6 +42,7 @@ var Abschluss;
     pushPersons();
     function pushPersons() {
         Abschluss.bastille.personsInRoom.push(Abschluss.prisoners);
+        Abschluss.bastille.personsInRoom.push(Abschluss.firstEnemy);
         castleGarden.personsInRoom.push(Abschluss.guardGarden);
         castleEntry.personsInRoom.push(Abschluss.guardEntry);
         Abschluss.mirrorHall.personsInRoom.push(Abschluss.king);
@@ -74,6 +75,20 @@ var Abschluss;
             }
     }
     Abschluss.createBodyElements = createBodyElements;
+    function createInputFieldWithLabel() {
+        let userInput = document.createElement("input");
+        userInput.setAttribute("name", "userInput");
+        userInput.setAttribute("type", "text");
+        userInput.setAttribute("id", "userInput");
+        userInput.setAttribute("onchange", "Abschluss.processUserInput(Abschluss.submitCharInput())");
+        let inputLabel = document.createElement("label");
+        inputLabel.innerText = "Was möchtest du tun?:";
+        inputLabel.setAttribute("id", "label");
+        inputLabel.setAttribute("for", "userInput");
+        Abschluss.form.appendChild(inputLabel);
+        Abschluss.form.appendChild(userInput);
+        document.body.appendChild(Abschluss.form);
+    }
     function submitCharInput() {
         let textInput = document.getElementById("userInput").value;
         return textInput;
@@ -174,20 +189,6 @@ var Abschluss;
         Abschluss.player.dropItem(_itemToDrop);
     }
     Abschluss.dropItemFromInventory = dropItemFromInventory;
-    function createInputFieldWithLabel() {
-        let userInput = document.createElement("input");
-        userInput.setAttribute("name", "userInput");
-        userInput.setAttribute("type", "text");
-        userInput.setAttribute("id", "userInput");
-        userInput.setAttribute("onchange", "Abschluss.processUserInput(Abschluss.submitCharInput())");
-        let inputLabel = document.createElement("label");
-        inputLabel.innerText = "Was möchtest du tun?:";
-        inputLabel.setAttribute("id", "label");
-        inputLabel.setAttribute("for", "userInput");
-        Abschluss.form.appendChild(inputLabel);
-        Abschluss.form.appendChild(userInput);
-        document.body.appendChild(Abschluss.form);
-    }
     function createBodyElementsForAttack() {
         createBodyElements();
         let inputLabel = document.getElementById("label");

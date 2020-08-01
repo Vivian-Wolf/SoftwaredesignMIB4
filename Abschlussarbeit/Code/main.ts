@@ -30,7 +30,7 @@ namespace Abschluss {
 
     export let player: Player = new Player("Lord Mercier", castleEntry, 100);
 
-    export let prisoners: NormalPerson = new NormalPerson("Gefangene", bastille, 40, false, ["Wer anderen die Freiheit verweigert, verdient sie nicht für sich selbst", "Lasst die Revolution herrschen.", "Und eines Tages bin ich wieder frei und sag mir, wer Dich dann noch retten kann.");
+    export let prisoners: NormalPerson = new NormalPerson("Gefangene", bastille, 40, false, ["Wer anderen die Freiheit verweigert, verdient sie nicht für sich selbst", "Lasst die Revolution herrschen.", "Und eines Tages bin ich wieder frei und sag mir, wer Dich dann noch retten kann."]);
     export let firstEnemy: Person = new Enemy("Marie Lorean", bastille, 75, false);
     export let guardGarden: Enemy = new Enemy("Königsgarde", castleGarden, 60, true);
     export let guardEntry: Enemy = new Enemy("Königsgarde", castleEntry, 100, true);
